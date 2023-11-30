@@ -6,7 +6,72 @@
 import scrapy
 
 
-class BcuspiderItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+class BcuSpiderMagazineItem(scrapy.Item):
+    magazine_name = scrapy.Field()
+    magazine_link = scrapy.Field()
+
+    # added after insert
+    magazine_id = scrapy.Field()
+
+
+class BcuSpiderMagazineYearItem(scrapy.Item):
+    # this data is coming from parse()
+    magazine_name = scrapy.Field()
+    magazine_id = scrapy.Field()
+
+    # added after insert
+    magazine_year_id = scrapy.Field()
+
+    magazine_year = scrapy.Field()
+    magazine_year_link = scrapy.Field()
+
+
+# MagazineYearItem for magazines that don't have separate numbers page
+class BcuSpiderMagazineYearWithoutNumbersItem(scrapy.Item):
+    # this data is coming from parse()
+    magazine_name = scrapy.Field()
+    magazine_id = scrapy.Field()
+
+    # added after insert
+    magazine_year_id = scrapy.Field()
+    magazine_number_id = scrapy.Field()
+
+    magazine_year_name_without_numbers = scrapy.Field()  # Anul 1924, Anul 1925
+
+    # for years that have multiple magazine links
+    magazine_year_number = (
+        scrapy.Field()
+    )  # [('Partea 1', Partea_1_link), ('Partea 2', Partea_2_link)]
+
+    # for years that have a single magazine link
+    magazine_year_link = scrapy.Field()
+
+
+class BcuSpiderMagazineNumberItem(scrapy.Item):
+    # this data is coming from parse_magazine_years
+    magazine_name = scrapy.Field()
+    magazine_id = scrapy.Field()
+    magazine_year = scrapy.Field()
+    magazine_year_id = scrapy.Field()
+
+    # added after insert
+    magazine_number_id = scrapy.Field()
+
+    # scrapped by parse_magazine_numbers or coming from parse_magazine_years()
+    # (for years without numbers)
+    magazine_number_text = scrapy.Field()
+    magazine_number_link = scrapy.Field()
+
+
+class BcuSpiderMagazineContentPageItem(scrapy.Item):
+    # this data is coming from parse_magazine_numbers (for magazines with numbers)
+    # or parse_magazine_years (for magazines without numbers)
+    magazine_name = scrapy.Field()
+    magazine_id = scrapy.Field()
+    magazine_year = scrapy.Field()
+    magazine_year_id = scrapy.Field()
+    magazine_number_text = scrapy.Field()
+    magazine_number_id = scrapy.Field()
+
+    magazine_content_page = scrapy.Field()
+    magazine_content_text = scrapy.Field()
