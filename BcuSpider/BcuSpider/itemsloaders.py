@@ -4,7 +4,6 @@ from scrapy.loader import ItemLoader
 
 class BcuMagazineLoader(ItemLoader):
     default_output_processor = TakeFirst()
-    # magazine_name_in = MapCompose(lambda x: x.replace("null", "missing_name"))
     magazine_link_in = MapCompose(lambda x: "https://documente.bcucluj.ro/" + x.strip())
 
 
@@ -15,7 +14,6 @@ class BcuMagazineYearLoader(ItemLoader):
 
 class BcuMagazineNumberLoader(ItemLoader):
     default_output_processor = TakeFirst()
-    # magazine_number_link_in = MapCompose(lambda x: x.replace('\\', '/').replace('/', '//', 1))
 
 
 class BcuMagazineYearWithoutNumbersLoader(ItemLoader):

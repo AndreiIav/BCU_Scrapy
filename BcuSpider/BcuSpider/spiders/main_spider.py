@@ -1,4 +1,3 @@
-from pathlib import Path
 import io
 
 from PyPDF2 import PdfReader
