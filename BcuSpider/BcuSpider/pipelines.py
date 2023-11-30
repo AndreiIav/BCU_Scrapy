@@ -15,7 +15,11 @@ from BcuSpider.items import (
     BcuSpiderMagazineYearWithoutNumbersItem,
     BcuSpiderMagazineContentPageItem,
 )
-from BcuSpider.itemsloaders_helpers import IncrementId
+from BcuSpider.itemsloaders_helpers import (
+    IncrementId,
+    write_to_database,
+    get_id_from_database,
+)
 
 
 class BcuMagazinesPipeline:
@@ -23,19 +27,30 @@ class BcuMagazinesPipeline:
         adapter = ItemAdapter(item)
         if not isinstance(item, BcuSpiderMagazineItem):
             return item
-        p = Path(("downloads/magazines.txt"))
-        with open(p, 'a', encoding='utf_8') as magazines:
-            to_write = (
-                "magazine_name: "
-                + adapter.get('magazine_name')
-                + " magazine_link: "
-                + adapter.get('magazine_link')
-                + "\n"
-            )
-            magazines.write(to_write)
+        # p = Path(("downloads/magazines.txt"))
+        # with open(p, 'a', encoding='utf_8') as magazines:
+        #     to_write = (
+        #         "magazine_name: "
+        #         + adapter.get('magazine_name')
+        #         + " magazine_link: "
+        #         + adapter.get('magazine_link')
+        #         + "\n"
+        #     )
+        #     magazines.write(to_write)
+
+        write_to_database(
+            "test_empty.db",
+            "magazines",
+            adapter.get("name"),
+            adapter.get("magazine_link"),
+        )
 
         # replace with get magazine_id from db
-        item["magazine_id"] = IncrementId.increment_on_call()
+        # item["magazine_id"] = IncrementId.increment_on_call()
+        item["id"] = get_id_from_database(
+            "test_empty.db", "magazines", adapter.get("name")
+        )
+
         return item
 
 

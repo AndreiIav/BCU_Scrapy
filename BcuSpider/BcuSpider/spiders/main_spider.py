@@ -24,7 +24,11 @@ class BCUSpider(scrapy.Spider):
     name = "bcu"
     start_urls = ["https://documente.bcucluj.ro/periodice.html"]
 
-    wanted_magazines = ['Ardealul Teatral şi Artistic (1927-1928)']
+    wanted_magazines = [
+        'Ardealul Teatral şi Artistic (1927-1928)',
+        'Curierul Comercial, 1924',
+        'Arhiva Someşană (1924-1940)',
+    ]
     #'Ardealul Teatral şi Artistic (1927-1928)','Curierul Comercial, 1924','Arhiva Someşană (1924-1940)', 'Democraţia (1908-1913)', 'E.M.K.E (1885-1913)'
     not_wanted_magazines = [
         'Abecedar (1933-1934)',
@@ -57,7 +61,9 @@ class BCUSpider(scrapy.Spider):
             if mag.xpath("text()").get() in self.wanted_magazines:
                 # if mag.xpath("text()").get() not in self.not_wanted_magazines:
                 magazine = BcuMagazineLoader(item=BcuSpiderMagazineItem(), selector=mag)
-                magazine.add_xpath("magazine_name", "text()")
+                # magazine.add_xpath("magazine_name", "text()")
+                # magazine.add_xpath("magazine_link", "@href")
+                magazine.add_xpath("name", "text()")
                 magazine.add_xpath("magazine_link", "@href")
                 yield magazine.load_item()
 
@@ -69,11 +75,14 @@ class BCUSpider(scrapy.Spider):
                         next_page,
                         callback=self.parse_magazine_years,
                         cb_kwargs=dict(
-                            magazine_name=magazine.item.get("magazine_name"),
+                            # magazine_name=magazine.item.get("magazine_name"),
+                            # magazine_link=magazine.item.get("magazine_link"),
+                            # magazine_id=magazine.item.get(
+                            #     "magazine_id", "no magazine_id"
+                            # ),
+                            magazine_name=magazine.item.get("name"),
                             magazine_link=magazine.item.get("magazine_link"),
-                            magazine_id=magazine.item.get(
-                                "magazine_id", "no magazine_id"
-                            ),
+                            magazine_id=magazine.item.get("magazine_id"),
                         ),
                     )
 

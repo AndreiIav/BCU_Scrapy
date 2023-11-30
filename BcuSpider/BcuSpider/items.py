@@ -7,11 +7,17 @@ import scrapy
 
 
 class BcuSpiderMagazineItem(scrapy.Item):
-    magazine_name = scrapy.Field()
+    # magazine_name = scrapy.Field()
+    # magazine_link = scrapy.Field()
+
+    # # added after insert
+    # magazine_id = scrapy.Field()
+
+    name = scrapy.Field()
     magazine_link = scrapy.Field()
 
     # added after insert
-    magazine_id = scrapy.Field()
+    id = scrapy.Field()
 
 
 class BcuSpiderMagazineYearItem(scrapy.Item):

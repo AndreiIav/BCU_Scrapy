@@ -64,10 +64,10 @@ ROBOTSTXT_OBEY = True
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
     "BcuSpider.pipelines.BcuMagazinesPipeline": 300,
-    "BcuSpider.pipelines.BcuMagazineYearsPipeline": 301,
-    "BcuSpider.pipelines.BcuMagazineYearsWithoutNumbersPipeline": 302,
-    "BcuSpider.pipelines.BcuMagazineNumbersPipeline": 303,
-    "BcuSpider.pipelines.BcuNumberPageContentPipeline": 304,
+    # "BcuSpider.pipelines.BcuMagazineYearsPipeline": 301,
+    # "BcuSpider.pipelines.BcuMagazineYearsWithoutNumbersPipeline": 302,
+    # "BcuSpider.pipelines.BcuMagazineNumbersPipeline": 303,
+    # "BcuSpider.pipelines.BcuNumberPageContentPipeline": 304,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
