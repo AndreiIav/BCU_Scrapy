@@ -9,7 +9,7 @@ class BcuMagazineLoader(ItemLoader):
 
 class BcuMagazineYearLoader(ItemLoader):
     default_output_processor = TakeFirst()
-    magazine_year_in = MapCompose(lambda x: " ".join(x.split()))
+    year_in = MapCompose(lambda x: " ".join(x.split()))
 
 
 class BcuMagazineNumberLoader(ItemLoader):

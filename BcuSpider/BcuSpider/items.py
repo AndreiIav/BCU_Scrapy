@@ -13,6 +13,7 @@ class BcuSpiderMagazineItem(scrapy.Item):
     # # added after insert
     # magazine_id = scrapy.Field()
 
+    # scrapped data
     name = scrapy.Field()
     magazine_link = scrapy.Field()
 
@@ -22,14 +23,24 @@ class BcuSpiderMagazineItem(scrapy.Item):
 
 class BcuSpiderMagazineYearItem(scrapy.Item):
     # this data is coming from parse()
-    magazine_name = scrapy.Field()
+    # magazine_name = scrapy.Field()
+    # magazine_id = scrapy.Field()
+
+    # # added after insert
+    # magazine_year_id = scrapy.Field()
+
+    # magazine_year = scrapy.Field()
+    # magazine_year_link = scrapy.Field()
+
+    # this data is coming from parse()
     magazine_id = scrapy.Field()
 
-    # added after insert
-    magazine_year_id = scrapy.Field()
-
-    magazine_year = scrapy.Field()
+    # scrapped data
+    year = scrapy.Field()
     magazine_year_link = scrapy.Field()
+
+    # added after insert
+    id = scrapy.Field()
 
 
 # MagazineYearItem for magazines that don't have separate numbers page

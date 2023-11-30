@@ -56,17 +56,20 @@ def write_to_database(database_name, table, *values):
     conn.close()
 
 
-def get_id_from_database(database_name, table, value):
+def get_id_from_database(database_name, table, *value):
     conn = sqlite3.connect(database_name)
     c = conn.cursor()
 
     # magazines table
     if table == "magazines":
-        c.execute("SELECT id FROM magazines WHERE name = ?", (value,))
+        c.execute("SELECT id FROM magazines WHERE name = ?", (value[0],))
 
     # magazine_year table
     if table == "magazine_year":
-        c.execute("SELECT id FROM magazine_year WHERE year = ?", (value,))
+        c.execute(
+            "SELECT id FROM magazine_year WHERE magazine_id = ? AND magazine_year_link = ?",
+            (value[0], value[1]),
+        )
 
     # magazine_number table
     if table == "magazine_number":

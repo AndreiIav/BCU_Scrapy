@@ -59,23 +59,37 @@ class BcuMagazineYearsPipeline:
         adapter = ItemAdapter(item)
         if not isinstance(item, BcuSpiderMagazineYearItem):
             return item
-        p = Path(("downloads/magazineYears.txt"))
-        with open(p, "a", encoding="utf_8") as magazine_years:
-            to_write = (
-                "magazine_id: "
-                + str(adapter.get("magazine_id"))
-                + " magazine_name: "
-                + adapter.get("magazine_name")
-                + " magazine_year: "
-                + adapter.get("magazine_year")
-                + " magazine_year_link: "
-                + adapter.get("magazine_year_link")
-                + "\n"
-            )
-            magazine_years.write(to_write)
+        # p = Path(("downloads/magazineYears.txt"))
+        # with open(p, "a", encoding="utf_8") as magazine_years:
+        #     to_write = (
+        #         "magazine_id: "
+        #         + str(adapter.get("magazine_id"))
+        #         + " magazine_name: "
+        #         + adapter.get("magazine_name")
+        #         + " magazine_year: "
+        #         + adapter.get("magazine_year")
+        #         + " magazine_year_link: "
+        #         + adapter.get("magazine_year_link")
+        #         + "\n"
+        #     )
+        #     magazine_years.write(to_write)
+        write_to_database(
+            "test_empty.db",
+            "magazine_year",
+            adapter.get("magazine_id"),
+            adapter.get("year"),
+            adapter.get("magazine_year_link"),
+        )
 
         # replace with get magazine_year_id from db
-        item["magazine_year_id"] = IncrementId.increment_on_call()
+        # item["magazine_year_id"] = IncrementId.increment_on_call()
+        item["id"] = get_id_from_database(
+            "test_empty.db",
+            "magazine_year",
+            adapter.get("magazine_id"),
+            adapter.get("magazine_year_link"),
+        )
+
         return item
 
 
