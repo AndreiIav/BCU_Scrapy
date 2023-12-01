@@ -113,12 +113,13 @@ class BcuSpiderMagazineNumberItem(scrapy.Item):
 class BcuSpiderMagazineContentPageItem(scrapy.Item):
     # this data is coming from parse_magazine_numbers (for magazines with numbers)
     # or parse_magazine_years (for magazines without numbers)
-    magazine_name = scrapy.Field()
-    magazine_id = scrapy.Field()
-    magazine_year = scrapy.Field()
-    magazine_year_id = scrapy.Field()
-    magazine_number_text = scrapy.Field()
+    # magazine_name = scrapy.Field()
+    # magazine_id = scrapy.Field()
+    # magazine_year = scrapy.Field()
+    # magazine_year_id = scrapy.Field()
+    # magazine_number_text = scrapy.Field()
     magazine_number_id = scrapy.Field()
 
+    # scrapped data
     magazine_content_page = scrapy.Field()
     magazine_content_text = scrapy.Field()

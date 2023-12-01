@@ -243,7 +243,7 @@ class BcuMagazineNumbersPipeline:
             )
 
         # item["magazine_number_id"] = IncrementId.increment_on_call()
-        get_id_from_database(
+        item["id"] = get_id_from_database(
             "test_empty.db",
             "magazine_number",
             adapter.get("magazine_year_id"),
@@ -258,12 +258,12 @@ class BcuNumberPageContentPipeline:
         if not isinstance(item, BcuSpiderMagazineContentPageItem):
             return item
 
-        magazine_name = adapter.get("magazine_name")
-        magazine_year = (
-            adapter.get("magazine_year").replace('/', '-').replace('\\', '-')
-        )
-        magazine_number_text = adapter.get("magazine_number_text")
-        magazine_number_id = str(adapter.get("magazine_number_id"))
+        # magazine_name = adapter.get("magazine_name")
+        # magazine_year = (
+        #     adapter.get("magazine_year").replace('/', '-').replace('\\', '-')
+        # )
+        # magazine_number_text = adapter.get("magazine_number_text")
+        # magazine_number_id = str(adapter.get("magazine_number_id"))
 
         magazine_content_page = adapter.get("magazine_content_page")
         magazine_content_text = adapter.get("magazine_content_text")
@@ -277,18 +277,25 @@ class BcuNumberPageContentPipeline:
                 f"ContentPageItem {item} dropped becuase magazine_number_page is missing."
             )
 
-        p = (
-            Path("downloads/content")
-            / f"{magazine_name}_{magazine_year}_{magazine_number_text}_{magazine_number_id}.txt"
+        # p = (
+        #     Path("downloads/content")
+        #     / f"{magazine_name}_{magazine_year}_{magazine_number_text}_{magazine_number_id}.txt"
+        # )
+        # with open(p, "a", encoding="utf_8") as page_content:
+        #     to_write = (
+        #         "page "
+        #         + str(magazine_content_page)
+        #         + "\n"
+        #         + magazine_content_text
+        #         + "\n"
+        #     )
+        #     page_content.write(to_write)
+        write_to_database(
+            "test_empty.db",
+            "magazine_number_content",
+            adapter.get("magazine_number_id"),
+            adapter.get("magazine_content_text"),
+            adapter.get("magazine_content_page"),
         )
-        with open(p, "a", encoding="utf_8") as page_content:
-            to_write = (
-                "page "
-                + str(magazine_content_page)
-                + "\n"
-                + magazine_content_text
-                + "\n"
-            )
-            page_content.write(to_write)
 
         return item

@@ -262,27 +262,28 @@ class BCUSpider(scrapy.Spider):
                 magazine_number.add_value("magazine_year_id", magazine_year_id)
                 yield magazine_number.load_item()
 
-                # next_page = magazine_number.item.get("magazine_number_link")
+                next_page = magazine_number.item.get("magazine_number_link")
 
-                # if next_page:
-                #     yield response.follow(
-                #         next_page,
-                #         callback=self.get_magazine_number_pdf,
-                #         cb_kwargs=dict(
-                #             magazine_name=magazine_number.item.get("magazine_name"),
-                #             magazine_id=magazine_number.item.get("magazine_id"),
-                #             magazine_year=magazine_number.item.get("magazine_year"),
-                #             magazine_year_id=magazine_number.item.get(
-                #                 "magazine_year_id"
-                #             ),
-                #             magazine_number_text=magazine_number.item.get(
-                #                 "magazine_number_text"
-                #             ),
-                #             magazine_number_id=magazine_number.item.get(
-                #                 "magazine_number_id"
-                #             ),
-                #         ),
-                #     )
+                if next_page:
+                    # self.logger.info(
+                    #     f"In parse_magazine_numbers magazine_number_id is {magazine_number.item.get('id')}"
+                    # )
+                    yield response.follow(
+                        next_page,
+                        callback=self.get_magazine_number_pdf,
+                        cb_kwargs=dict(
+                            # magazine_name=magazine_number.item.get("magazine_name"),
+                            # magazine_id=magazine_number.item.get("magazine_id"),
+                            # magazine_year=magazine_number.item.get("magazine_year"),
+                            # magazine_year_id=magazine_number.item.get(
+                            #     "magazine_year_id"
+                            # ),
+                            # magazine_number_text=magazine_number.item.get(
+                            #     "magazine_number_text"
+                            # ),
+                            magazine_number_id=magazine_number.item.get("id"),
+                        ),
+                    )
 
         # magazine years without numbers
         else:
@@ -297,73 +298,80 @@ class BCUSpider(scrapy.Spider):
             magazine_number_w.add_value("magazine_number_link", magazine_year_link)
             yield magazine_number_w.load_item()
 
-            # next_page = magazine_number_w.item.get("magazine_number_link")
+            next_page = magazine_number_w.item.get("magazine_number_link")
 
-            # if next_page:
-            #     magazine_name = magazine_number_w.item.get("magazine_name")
-            #     magazine_id = magazine_number_w.item.get("magazine_id")
-            #     magazine_year = magazine_number_w.item.get("magazine_year")
-            #     magazine_year_id = magazine_number_w.item.get("magazine_year_id")
-            #     magazine_number_text = magazine_number_w.item.get(
-            #         "magazine_number_text"
-            #     )
-            #     magazine_number_id = magazine_number_w.item.get("magazine_number_id")
+            if next_page:
+                # magazine_name = magazine_number_w.item.get("magazine_name")
+                # magazine_id = magazine_number_w.item.get("magazine_id")
+                # magazine_year = magazine_number_w.item.get("magazine_year")
+                # magazine_year_id = magazine_number_w.item.get("magazine_year_id")
+                # magazine_number_text = magazine_number_w.item.get(
+                #     "magazine_number_text"
+                # )
+                # magazine_number_id = magazine_number_w.item.get("magazine_number_id")
 
-            #     yield response.follow(
-            #         next_page,
-            #         callback=self.get_magazine_number_pdf,
-            #         cb_kwargs=dict(
-            #             magazine_name=magazine_name,
-            #             magazine_id=magazine_id,
-            #             magazine_year=magazine_year,
-            #             magazine_year_id=magazine_year_id,
-            #             magazine_number_text=magazine_number_text,
-            #             magazine_number_id=magazine_number_id,
-            #         ),
-            #     )
+                yield response.follow(
+                    next_page,
+                    callback=self.get_magazine_number_pdf,
+                    cb_kwargs=dict(
+                        # magazine_name=magazine_name,
+                        # magazine_id=magazine_id,
+                        # magazine_year=magazine_year,
+                        # magazine_year_id=magazine_year_id,
+                        # magazine_number_text=magazine_number_text,
+                        # magazine_number_id=magazine_number_id,
+                        magazine_number_id=magazine_number_w.item.get("id")
+                    ),
+                )
 
-    # def get_magazine_number_pdf(
-    #     self,
-    #     response,
-    #     magazine_name,
-    #     magazine_id,
-    #     magazine_year,
-    #     magazine_year_id,
-    #     magazine_number_text,
-    #     magazine_number_id,
-    # ):
-    #     # self.logger.info(f"In get_magazine_number_pdf Response is {response.url} .")
-    #     # self.logger.info(f"magazine_name is {magazine_name}")
-    #     # self.logger.info(f"magazine_id is {magazine_id}")
-    #     # self.logger.info(f"magazine_year is {magazine_year}")
-    #     # self.logger.info(f"magazine_year_id is {magazine_year_id}")
-    #     # self.logger.info(f"magazine_number_text is {magazine_number_text}")
-    #     # self.logger.info(f"magazine_number_id is {magazine_number_id}")
+    def get_magazine_number_pdf(
+        self,
+        response,
+        # magazine_name,
+        # magazine_id,
+        # magazine_year,
+        # magazine_year_id,
+        # magazine_number_text,
+        magazine_number_id,
+    ):
+        # self.logger.info(f"In get_magazine_number_pdf Response is {response.url} .")
+        # self.logger.info(f"magazine_name is {magazine_name}")
+        # self.logger.info(f"magazine_id is {magazine_id}")
+        # self.logger.info(f"magazine_year is {magazine_year}")
+        # self.logger.info(f"magazine_year_id is {magazine_year_id}")
+        # self.logger.info(f"magazine_number_text is {magazine_number_text}")
+        # self.logger.info(
+        #     f"In get_magazine_number_pdf magazine_number_id is {magazine_number_id}"
+        # )
 
-    #     bytesContent = response.body
+        bytesContent = response.body
 
-    #     with io.BytesIO(bytesContent) as f:
-    #         pdf_reader = PdfReader(f, strict=False)
-    #         for page in range(len(pdf_reader.pages)):
-    #             magazine_content_page = BcuMagazineContentPageLoader(
-    #                 item=BcuSpiderMagazineContentPageItem()
-    #             )
+        with io.BytesIO(bytesContent) as f:
+            pdf_reader = PdfReader(f, strict=False)
+            for page in range(len(pdf_reader.pages)):
+                magazine_content_page = BcuMagazineContentPageLoader(
+                    item=BcuSpiderMagazineContentPageItem()
+                )
 
-    #             p = pdf_reader.pages[page]
-    #             magazine_content_page.add_value("magazine_name", magazine_name)
-    #             magazine_content_page.add_value("magazine_id", magazine_id)
-    #             magazine_content_page.add_value("magazine_year", magazine_year)
-    #             magazine_content_page.add_value("magazine_year_id", magazine_year_id)
-    #             magazine_content_page.add_value(
-    #                 "magazine_number_text", magazine_number_text
-    #             )
-    #             magazine_content_page.add_value(
-    #                 "magazine_number_id", magazine_number_id
-    #             )
+                p = pdf_reader.pages[page]
+                # magazine_content_page.add_value("magazine_name", magazine_name)
+                # magazine_content_page.add_value("magazine_id", magazine_id)
+                # magazine_content_page.add_value("magazine_year", magazine_year)
+                # magazine_content_page.add_value("magazine_year_id", magazine_year_id)
+                # magazine_content_page.add_value(
+                #     "magazine_number_text", magazine_number_text
+                # )
+                magazine_content_page.add_value(
+                    "magazine_number_id", magazine_number_id
+                )
 
-    #             magazine_content_page.add_value("magazine_content_page", page + 1)
-    #             magazine_content_page.add_value(
-    #                 "magazine_content_text", p.extract_text()
-    #             )
+                # self.logger.info(
+                #     f"In get_magazine_number_pdf for loop magazine_number_id is {magazine_number_id}"
+                # )
 
-    #             yield magazine_content_page.load_item()
+                magazine_content_page.add_value("magazine_content_page", page + 1)
+                magazine_content_page.add_value(
+                    "magazine_content_text", p.extract_text()
+                )
+
+                yield magazine_content_page.load_item()
