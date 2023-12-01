@@ -67,7 +67,7 @@ def get_id_from_database(database_name, table, *value):
     # magazine_year table
     if table == "magazine_year":
         c.execute(
-            "SELECT id FROM magazine_year WHERE magazine_id = ? AND magazine_year_link = ?",
+            "SELECT id FROM magazine_year WHERE magazine_id = ? AND year = ?",
             (value[0], value[1]),
         )
 

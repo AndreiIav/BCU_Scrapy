@@ -45,23 +45,42 @@ class BcuSpiderMagazineYearItem(scrapy.Item):
 
 # MagazineYearItem for magazines that don't have separate numbers page
 class BcuSpiderMagazineYearWithoutNumbersItem(scrapy.Item):
+    # # this data is coming from parse()
+    # magazine_name = scrapy.Field()
+    # magazine_id = scrapy.Field()
+
+    # # added after insert
+    # magazine_year_id = scrapy.Field()
+    # magazine_number_id = scrapy.Field()
+
+    # # Anul 1924, Anul 1925
+    # magazine_year_name_without_numbers = scrapy.Field()
+
+    # # for years that have multiple magazine links
+    # # [('Partea 1', Partea_1_link), ('Partea 2', Partea_2_link)]
+    # magazine_year_number = scrapy.Field()
+
+    # # for years that have a single magazine link
+    # magazine_year_link = scrapy.Field()
+
     # this data is coming from parse()
-    magazine_name = scrapy.Field()
     magazine_id = scrapy.Field()
 
-    # added after insert
-    magazine_year_id = scrapy.Field()
-    magazine_number_id = scrapy.Field()
-
+    # scrapped data
     # Anul 1924, Anul 1925
     magazine_year_name_without_numbers = scrapy.Field()
 
+    # scrapped data
     # for years that have multiple magazine links
     # [('Partea 1', Partea_1_link), ('Partea 2', Partea_2_link)]
     magazine_year_number = scrapy.Field()
 
+    # scrapped data
     # for years that have a single magazine link
     magazine_year_link = scrapy.Field()
+
+    # added after insert
+    id = scrapy.Field()
 
 
 class BcuSpiderMagazineNumberItem(scrapy.Item):

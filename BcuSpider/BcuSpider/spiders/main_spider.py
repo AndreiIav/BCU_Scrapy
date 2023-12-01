@@ -26,8 +26,8 @@ class BCUSpider(scrapy.Spider):
 
     wanted_magazines = [
         'Ardealul Teatral şi Artistic (1927-1928)',
-        # 'Curierul Comercial, 1924',
-        # 'Arhiva Someşană (1924-1940)',
+        'Curierul Comercial, 1924',
+        'Arhiva Someşană (1924-1940)',
     ]
     #'Ardealul Teatral şi Artistic (1927-1928)','Curierul Comercial, 1924','Arhiva Someşană (1924-1940)', 'Democraţia (1908-1913)', 'E.M.K.E (1885-1913)'
     not_wanted_magazines = [
@@ -108,82 +108,84 @@ class BCUSpider(scrapy.Spider):
             magazine_year.add_value("magazine_id", magazine_id)
             yield magazine_year.load_item()
 
-    #         next_page = magazine_year.item.get("magazine_year_link")
-    #         if next_page:
-    #             yield response.follow(
-    #                 next_page,
-    #                 callback=self.parse_magazine_numbers,
-    #                 cb_kwargs=dict(
-    #                     magazine_id=magazine_id,
-    #                     magazine_name=magazine_name,
-    #                     magazine_year=magazine_year.item.get("magazine_year"),
-    #                     magazine_year_id=magazine_year.item.get("magazine_year_id"),
-    #                     magazine_year_link=magazine_year.item.get("magazine_year_link"),
-    #                 ),
-    #             )
+            # next_page = magazine_year.item.get("magazine_year_link")
+            # if next_page:
+            #     yield response.follow(
+            #         next_page,
+            #         callback=self.parse_magazine_numbers,
+            #         cb_kwargs=dict(
+            #             # magazine_id=magazine_id,
+            #             # magazine_name=magazine_name,
+            #             # magazine_year=magazine_year.item.get("magazine_year"),
+            #             # magazine_year_id=magazine_year.item.get("magazine_year_id"),
+            #             # magazine_year_link=magazine_year.item.get("magazine_year_link"),
+            #             magazine_year_id=magazine_year.item.get("id"),
+            #             magazine_year_link=magazine_year.item.get("magazine_year_link"),
+            #         ),
+            #     )
 
-    #     # magazine_years that have multiple magazine links
-    #     magazine_years_numbers = response.xpath(
-    #         "//tr//td[contains(@background, '.jpg')]//div[contains(@align, 'left')]"
-    #     )
-    #     for year_number in magazine_years_numbers:
-    #         magazine_year_number = BcuMagazineYearWithoutNumbersLoader(
-    #             item=BcuSpiderMagazineYearWithoutNumbersItem(), selector=year_number
-    #         )
-    #         magazine_year_number.add_value("magazine_name", magazine_name)
-    #         magazine_year_number.add_value("magazine_id", magazine_id)
-    #         year = year_number.xpath(
-    #             ".//span[contains(@class, 'central')]/text()"
-    #         ).get()
-    #         link_text = year_number.xpath(
-    #             ".//a[contains(@href, 'pdf')]/text()"
-    #         ).getall()  # add strip()
-    #         links = year_number.xpath(".//a[contains(@href, 'pdf')]/@href").getall()
-    #         links = [magazine_link + link for link in links]
-    #         res = [list(zip(link_text, links))]
-    #         magazine_year_number.add_value("magazine_year_name_without_numbers", year)
-    #         magazine_year_number.add_value("magazine_year_number", res)
-    #         yield magazine_year_number.load_item()
+        # magazine_years that have multiple magazine links
+        magazine_years_numbers = response.xpath(
+            "//tr//td[contains(@background, '.jpg')]//div[contains(@align, 'left')]"
+        )
+        for year_number in magazine_years_numbers:
+            magazine_year_number = BcuMagazineYearWithoutNumbersLoader(
+                item=BcuSpiderMagazineYearWithoutNumbersItem(), selector=year_number
+            )
+            # magazine_year_number.add_value("magazine_name", magazine_name)
+            magazine_year_number.add_value("magazine_id", magazine_id)
+            year = year_number.xpath(
+                ".//span[contains(@class, 'central')]/text()"
+            ).get()
+            link_text = year_number.xpath(
+                ".//a[contains(@href, 'pdf')]/text()"
+            ).getall()  # add strip()
+            links = year_number.xpath(".//a[contains(@href, 'pdf')]/@href").getall()
+            links = [magazine_link + link for link in links]
+            res = [list(zip(link_text, links))]
+            magazine_year_number.add_value("magazine_year_name_without_numbers", year)
+            magazine_year_number.add_value("magazine_year_number", res)
+            yield magazine_year_number.load_item()
 
-    #         for link_text, next_page in magazine_year_number.item.get(
-    #             "magazine_year_number"
-    #         ):
-    #             if next_page:
-    #                 yield response.follow(
-    #                     next_page,
-    #                     callback=self.parse_magazine_numbers,
-    #                     cb_kwargs=dict(
-    #                         magazine_name=magazine_year_number.item.get(
-    #                             "magazine_name"
-    #                         ),
-    #                         magazine_id=magazine_year_number.item.get("magazine_id"),
-    #                         magazine_year=magazine_year_number.item.get(
-    #                             "magazine_year_name_without_numbers"
-    #                         ),
-    #                         magazine_year_id=magazine_year_number.item.get(
-    #                             "magazine_year_id"
-    #                         ),
-    #                         magazine_year_link=next_page,
-    #                         magazine_number_text=link_text.strip(),
-    #                         magazine_without_numbers=True,
-    #                     ),
-    #                 )
+        #         for link_text, next_page in magazine_year_number.item.get(
+        #             "magazine_year_number"
+        #         ):
+        #             if next_page:
+        #                 yield response.follow(
+        #                     next_page,
+        #                     callback=self.parse_magazine_numbers,
+        #                     cb_kwargs=dict(
+        #                         magazine_name=magazine_year_number.item.get(
+        #                             "magazine_name"
+        #                         ),
+        #                         magazine_id=magazine_year_number.item.get("magazine_id"),
+        #                         magazine_year=magazine_year_number.item.get(
+        #                             "magazine_year_name_without_numbers"
+        #                         ),
+        #                         magazine_year_id=magazine_year_number.item.get(
+        #                             "magazine_year_id"
+        #                         ),
+        #                         magazine_year_link=next_page,
+        #                         magazine_number_text=link_text.strip(),
+        #                         magazine_without_numbers=True,
+        #                     ),
+        #                 )
 
-    #     # magazine_years that have a single magazine link
-    #     magazine_years_year = response.xpath(
-    #         "//tr//td[contains(@background, '.jpg')]//div[contains(@align, 'center')]//a[contains(@href, '.pdf')]"
-    #     )
-    #     for year_year in magazine_years_year:
-    #         magazine_year_year = BcuMagazineYearWithoutNumbersLoader(
-    #             item=BcuSpiderMagazineYearWithoutNumbersItem(), selector=year_year
-    #         )
-    #         magazine_year_year.add_value("magazine_name", magazine_name)
-    #         magazine_year_year.add_value("magazine_id", magazine_id)
-    #         magazine_year_year.add_xpath("magazine_year_name_without_numbers", "text()")
-    #         magazine_year_year.add_value(
-    #             "magazine_year_link", magazine_link + year_year.xpath("@href").get()
-    #         )
-    #         yield magazine_year_year.load_item()
+        #     # magazine_years that have a single magazine link
+        magazine_years_year = response.xpath(
+            "//tr//td[contains(@background, '.jpg')]//div[contains(@align, 'center')]//a[contains(@href, '.pdf')]"
+        )
+        for year_year in magazine_years_year:
+            magazine_year_year = BcuMagazineYearWithoutNumbersLoader(
+                item=BcuSpiderMagazineYearWithoutNumbersItem(), selector=year_year
+            )
+            # magazine_year_year.add_value("magazine_name", magazine_name)
+            magazine_year_year.add_value("magazine_id", magazine_id)
+            magazine_year_year.add_xpath("magazine_year_name_without_numbers", "text()")
+            magazine_year_year.add_value(
+                "magazine_year_link", magazine_link + year_year.xpath("@href").get()
+            )
+            yield magazine_year_year.load_item()
 
     #         next_page = magazine_year_year.item.get("magazine_year_link")
     #         if next_page:
@@ -210,11 +212,17 @@ class BCUSpider(scrapy.Spider):
     #             )
 
     # def parse_magazine_numbers(
+    #     # self,
+    #     # response,
+    #     # magazine_id,
+    #     # magazine_name,
+    #     # magazine_year,
+    #     # magazine_year_id,
+    #     # magazine_year_link,
+    #     # magazine_number_text="",
+    #     # magazine_without_numbers=False,
     #     self,
     #     response,
-    #     magazine_id,
-    #     magazine_name,
-    #     magazine_year,
     #     magazine_year_id,
     #     magazine_year_link,
     #     magazine_number_text="",

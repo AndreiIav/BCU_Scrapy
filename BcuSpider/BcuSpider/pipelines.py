@@ -87,7 +87,7 @@ class BcuMagazineYearsPipeline:
             "test_empty.db",
             "magazine_year",
             adapter.get("magazine_id"),
-            adapter.get("magazine_year_link"),
+            adapter.get("year"),
         )
 
         return item
@@ -101,26 +101,40 @@ class BcuMagazineYearsWithoutNumbersPipeline:
 
         # magazine years without numbers that have multiple magazine links
         if adapter.get("magazine_year_number"):
-            magazine_years_path = Path(
-                "downloads/magazineYears.txt"
-            )  # magazineYearsWithoutNumbers.txt
-            with open(
-                magazine_years_path, "a", encoding="utf_8"
-            ) as magazine_years_numbers:
-                to_write = (
-                    "magazine_id: "
-                    + str(adapter.get("magazine_id"))
-                    + " magazine_name: "
-                    + adapter.get("magazine_name")
-                    + " magazine_year_name_without_numbers: "
-                    + adapter.get("magazine_year_name_without_numbers")
-                    + " magazine_year_number: "
-                    + str(adapter.get("magazine_year_number"))
-                    + "\n"
-                )
-                magazine_years_numbers.write(to_write)
+            # magazine_years_path = Path(
+            #     "downloads/magazineYears.txt"
+            # )  # magazineYearsWithoutNumbers.txt
+            # with open(
+            #     magazine_years_path, "a", encoding="utf_8"
+            # ) as magazine_years_numbers:
+            #     to_write = (
+            #         "magazine_id: "
+            #         + str(adapter.get("magazine_id"))
+            #         + " magazine_name: "
+            #         + adapter.get("magazine_name")
+            #         + " magazine_year_name_without_numbers: "
+            #         + adapter.get("magazine_year_name_without_numbers")
+            #         + " magazine_year_number: "
+            #         + str(adapter.get("magazine_year_number"))
+            #         + "\n"
+            #     )
+            #     magazine_years_numbers.write(to_write)
+            write_to_database(
+                "test_empty.db",
+                "magazine_year",
+                adapter.get("magazine_id"),
+                adapter.get("magazine_year_name_without_numbers"),
+                str(adapter.get("magazine_year_number")),
+            )
+
             # replace with get magazine_year_id from db
-            item["magazine_year_id"] = IncrementId.increment_on_call()
+            # item["magazine_year_id"] = IncrementId.increment_on_call()
+            item["id"] = get_id_from_database(
+                "test_empty.db",
+                "magazine_year",
+                adapter.get("magazine_id"),
+                adapter.get("magazine_year_name_without_numbers"),
+            )
 
             # magazine_numbers_year_path = Path("downloads/magazineNumbers.txt")
             # for part, link in adapter.get("magazine_year_number"):
@@ -138,24 +152,38 @@ class BcuMagazineYearsWithoutNumbersPipeline:
 
         # magazine years without numbers that have a single magazine link
         else:
-            magazine_years_path = Path("downloads/magazineYears.txt")
-            with open(
-                magazine_years_path, "a", encoding="utf_8"
-            ) as magazine_years_numbers:
-                to_write = (
-                    "magazine_id: "
-                    + str(adapter.get("magazine_id"))
-                    + " magazine_name: "
-                    + adapter.get("magazine_name")
-                    + " magazine_year_name_without_numbers: "
-                    + adapter.get("magazine_year_name_without_numbers")
-                    + " magazine_year_link: "
-                    + adapter.get("magazine_year_link")
-                    + "\n"
-                )
-                magazine_years_numbers.write(to_write)
+            # magazine_years_path = Path("downloads/magazineYears.txt")
+            # with open(
+            #     magazine_years_path, "a", encoding="utf_8"
+            # ) as magazine_years_numbers:
+            #     to_write = (
+            #         "magazine_id: "
+            #         + str(adapter.get("magazine_id"))
+            #         + " magazine_name: "
+            #         + adapter.get("magazine_name")
+            #         + " magazine_year_name_without_numbers: "
+            #         + adapter.get("magazine_year_name_without_numbers")
+            #         + " magazine_year_link: "
+            #         + adapter.get("magazine_year_link")
+            #         + "\n"
+            #     )
+            #     magazine_years_numbers.write(to_write)
+            write_to_database(
+                "test_empty.db",
+                "magazine_year",
+                adapter.get("magazine_id"),
+                adapter.get("magazine_year_name_without_numbers"),
+                adapter.get("magazine_year_link"),
+            )
+
             # replace with get magazine_year_id from db
-            item["magazine_year_id"] = IncrementId.increment_on_call()
+            # item["magazine_year_id"] = IncrementId.increment_on_call()
+            item["id"] = get_id_from_database(
+                "test_empty.db",
+                "magazine_year",
+                adapter.get("magazine_id"),
+                adapter.get("magazine_year_name_without_numbers"),
+            )
 
             # magazine_numbers_year_path = Path("downloads/magazineNumbers.txt")
             # with open(magazine_numbers_year_path, "a", encoding="utf_8") as magazine_numbers_year:
