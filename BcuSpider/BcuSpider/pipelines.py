@@ -216,26 +216,39 @@ class BcuMagazineNumbersPipeline:
                 f"MagazineNumberItem {item} dropped because magazine_number is missing"
             )
         else:
-            p = Path("downloads/magazineNumbers.txt")
-            with open(p, "a", encoding="utf_8") as magazine_numbers:
-                to_write = (
-                    "magazine_id: "
-                    + str(adapter.get("magazine_id"))
-                    + " magazine_name: "
-                    + adapter.get("magazine_name")
-                    + " magazine_year_id: "
-                    + str(adapter.get("magazine_year_id"))
-                    + " magazine_year: "
-                    + adapter.get("magazine_year")
-                    + " magazine_number: "
-                    + adapter.get("magazine_number_text")
-                    + " magazine_number_link: "
-                    + adapter.get("magazine_number_link")
-                    + "\n"
-                )
-                magazine_numbers.write(to_write)
+            # p = Path("downloads/magazineNumbers.txt")
+            # with open(p, "a", encoding="utf_8") as magazine_numbers:
+            #     to_write = (
+            #         "magazine_id: "
+            #         + str(adapter.get("magazine_id"))
+            #         + " magazine_name: "
+            #         + adapter.get("magazine_name")
+            #         + " magazine_year_id: "
+            #         + str(adapter.get("magazine_year_id"))
+            #         + " magazine_year: "
+            #         + adapter.get("magazine_year")
+            #         + " magazine_number: "
+            #         + adapter.get("magazine_number_text")
+            #         + " magazine_number_link: "
+            #         + adapter.get("magazine_number_link")
+            #         + "\n"
+            #     )
+            #     magazine_numbers.write(to_write)
+            write_to_database(
+                "test_empty.db",
+                "magazine_number",
+                adapter.get("magazine_year_id"),
+                adapter.get("magazine_number_text"),
+                adapter.get("magazine_number_link"),
+            )
 
-        item["magazine_number_id"] = IncrementId.increment_on_call()
+        # item["magazine_number_id"] = IncrementId.increment_on_call()
+        get_id_from_database(
+            "test_empty.db",
+            "magazine_number",
+            adapter.get("magazine_year_id"),
+            adapter.get("magazine_number_text"),
+        )
         return item
 
 

@@ -66,7 +66,7 @@ ITEM_PIPELINES = {
     "BcuSpider.pipelines.BcuMagazinesPipeline": 300,
     "BcuSpider.pipelines.BcuMagazineYearsPipeline": 301,
     "BcuSpider.pipelines.BcuMagazineYearsWithoutNumbersPipeline": 302,
-    # "BcuSpider.pipelines.BcuMagazineNumbersPipeline": 303,
+    "BcuSpider.pipelines.BcuMagazineNumbersPipeline": 303,
     # "BcuSpider.pipelines.BcuNumberPageContentPipeline": 304,
 }
 

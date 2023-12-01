@@ -108,21 +108,20 @@ class BCUSpider(scrapy.Spider):
             magazine_year.add_value("magazine_id", magazine_id)
             yield magazine_year.load_item()
 
-            # next_page = magazine_year.item.get("magazine_year_link")
-            # if next_page:
-            #     yield response.follow(
-            #         next_page,
-            #         callback=self.parse_magazine_numbers,
-            #         cb_kwargs=dict(
-            #             # magazine_id=magazine_id,
-            #             # magazine_name=magazine_name,
-            #             # magazine_year=magazine_year.item.get("magazine_year"),
-            #             # magazine_year_id=magazine_year.item.get("magazine_year_id"),
-            #             # magazine_year_link=magazine_year.item.get("magazine_year_link"),
-            #             magazine_year_id=magazine_year.item.get("id"),
-            #             magazine_year_link=magazine_year.item.get("magazine_year_link"),
-            #         ),
-            #     )
+            next_page = magazine_year.item.get("magazine_year_link")
+            if next_page:
+                yield response.follow(
+                    next_page,
+                    callback=self.parse_magazine_numbers,
+                    cb_kwargs=dict(
+                        # magazine_id=magazine_id,
+                        # magazine_name=magazine_name,
+                        # magazine_year=magazine_year.item.get("magazine_year"),
+                        # magazine_year_id=magazine_year.item.get("magazine_year_id"),
+                        magazine_year_link=magazine_year.item.get("magazine_year_link"),
+                        magazine_year_id=magazine_year.item.get("id"),
+                    ),
+                )
 
         # magazine_years that have multiple magazine links
         magazine_years_numbers = response.xpath(
@@ -147,31 +146,35 @@ class BCUSpider(scrapy.Spider):
             magazine_year_number.add_value("magazine_year_number", res)
             yield magazine_year_number.load_item()
 
-        #         for link_text, next_page in magazine_year_number.item.get(
-        #             "magazine_year_number"
-        #         ):
-        #             if next_page:
-        #                 yield response.follow(
-        #                     next_page,
-        #                     callback=self.parse_magazine_numbers,
-        #                     cb_kwargs=dict(
-        #                         magazine_name=magazine_year_number.item.get(
-        #                             "magazine_name"
-        #                         ),
-        #                         magazine_id=magazine_year_number.item.get("magazine_id"),
-        #                         magazine_year=magazine_year_number.item.get(
-        #                             "magazine_year_name_without_numbers"
-        #                         ),
-        #                         magazine_year_id=magazine_year_number.item.get(
-        #                             "magazine_year_id"
-        #                         ),
-        #                         magazine_year_link=next_page,
-        #                         magazine_number_text=link_text.strip(),
-        #                         magazine_without_numbers=True,
-        #                     ),
-        #                 )
+            for link_text, next_page in magazine_year_number.item.get(
+                "magazine_year_number"
+            ):
+                if next_page:
+                    yield response.follow(
+                        next_page,
+                        callback=self.parse_magazine_numbers,
+                        cb_kwargs=dict(
+                            # magazine_name=magazine_year_number.item.get(
+                            #     "magazine_name"
+                            # ),
+                            # magazine_id=magazine_year_number.item.get("magazine_id"),
+                            # magazine_year=magazine_year_number.item.get(
+                            #     "magazine_year_name_without_numbers"
+                            # ),
+                            # magazine_year_id=magazine_year_number.item.get(
+                            #     "magazine_year_id"
+                            # ),
+                            # magazine_year_link=next_page,
+                            # magazine_number_text=link_text.strip(),
+                            # magazine_without_numbers=True,
+                            magazine_year_id=magazine_year_number.item.get("id"),
+                            magazine_year_link=next_page,
+                            magazine_number_text=link_text.strip(),
+                            magazine_without_numbers=True,
+                        ),
+                    )
 
-        #     # magazine_years that have a single magazine link
+        # magazine_years that have a single magazine link
         magazine_years_year = response.xpath(
             "//tr//td[contains(@background, '.jpg')]//div[contains(@align, 'center')]//a[contains(@href, '.pdf')]"
         )
@@ -187,129 +190,137 @@ class BCUSpider(scrapy.Spider):
             )
             yield magazine_year_year.load_item()
 
-    #         next_page = magazine_year_year.item.get("magazine_year_link")
-    #         if next_page:
-    #             yield response.follow(
-    #                 next_page,
-    #                 callback=self.parse_magazine_numbers,
-    #                 cb_kwargs=dict(
-    #                     magazine_name=magazine_year_year.item.get("magazine_name"),
-    #                     magazine_id=magazine_year_year.item.get("magazine_id"),
-    #                     magazine_year=magazine_year_year.item.get(
-    #                         "magazine_year_name_without_numbers"
-    #                     ),
-    #                     magazine_year_id=magazine_year_year.item.get(
-    #                         "magazine_year_id"
-    #                     ),
-    #                     magazine_year_link=magazine_year_year.item.get(
-    #                         "magazine_year_link"
-    #                     ),
-    #                     magazine_number_text=magazine_year_year.item.get(
-    #                         "magazine_year_name_without_numbers"
-    #                     ),
-    #                     magazine_without_numbers=True,
-    #                 ),
-    #             )
+            next_page = magazine_year_year.item.get("magazine_year_link")
+            if next_page:
+                yield response.follow(
+                    next_page,
+                    callback=self.parse_magazine_numbers,
+                    cb_kwargs=dict(
+                        # magazine_name=magazine_year_year.item.get("magazine_name"),
+                        # magazine_id=magazine_year_year.item.get("magazine_id"),
+                        # magazine_year=magazine_year_year.item.get(
+                        #     "magazine_year_name_without_numbers"
+                        # ),
+                        # magazine_year_id=magazine_year_year.item.get(
+                        #     "magazine_year_id"
+                        # ),
+                        # magazine_year_link=magazine_year_year.item.get(
+                        #     "magazine_year_link"
+                        # ),
+                        # magazine_number_text=magazine_year_year.item.get(
+                        #     "magazine_year_name_without_numbers"
+                        # ),
+                        # magazine_without_numbers=True,
+                        magazine_year_id=magazine_year_year.item.get("id"),
+                        magazine_year_link=magazine_year_year.item.get(
+                            "magazine_year_link"
+                        ),
+                        magazine_number_text=magazine_year_year.item.get(
+                            "magazine_year_name_without_numbers"
+                        ),
+                        magazine_without_numbers=True,
+                    ),
+                )
 
-    # def parse_magazine_numbers(
-    #     # self,
-    #     # response,
-    #     # magazine_id,
-    #     # magazine_name,
-    #     # magazine_year,
-    #     # magazine_year_id,
-    #     # magazine_year_link,
-    #     # magazine_number_text="",
-    #     # magazine_without_numbers=False,
-    #     self,
-    #     response,
-    #     magazine_year_id,
-    #     magazine_year_link,
-    #     magazine_number_text="",
-    #     magazine_without_numbers=False,
-    # ):
-    #     # self.logger.info(f"In parse_magazine_numbers Response is {response.url} .")
+    def parse_magazine_numbers(
+        # self,
+        # response,
+        # magazine_id,
+        # magazine_name,
+        # magazine_year,
+        # magazine_year_id,
+        # magazine_year_link,
+        # magazine_number_text="",
+        # magazine_without_numbers=False,
+        self,
+        response,
+        magazine_year_id,
+        magazine_year_link,
+        magazine_number_text="",
+        magazine_without_numbers=False,
+    ):
+        # self.logger.info(f"In parse_magazine_numbers Response is {response.url} .")
 
-    #     if not magazine_without_numbers:
-    #         magazine_numbers = response.xpath(
-    #             "//div//a[contains(@href, '.pdf') and normalize-space(text())]"
-    #         )
+        if not magazine_without_numbers:
+            magazine_numbers = response.xpath(
+                "//div//a[contains(@href, '.pdf') and normalize-space(text())]"
+            )
 
-    #         for number in magazine_numbers:
-    #             magazine_number = BcuMagazineNumberLoader(
-    #                 item=BcuSpiderMagazineNumberItem(), selector=number
-    #             )
-    #             magazine_number.add_xpath("magazine_number_text", "text()")
-    #             magazine_number.add_value(
-    #                 "magazine_number_link",
-    #                 remove_last_element_from_url(magazine_year_link)
-    #                 + number.xpath("@href").get(),
-    #             )
-    #             magazine_number.add_value("magazine_id", magazine_id)
-    #             magazine_number.add_value("magazine_name", magazine_name)
-    #             magazine_number.add_value("magazine_year", magazine_year)
-    #             magazine_number.add_value("magazine_year_id", magazine_year_id)
-    #             yield magazine_number.load_item()
+            for number in magazine_numbers:
+                magazine_number = BcuMagazineNumberLoader(
+                    item=BcuSpiderMagazineNumberItem(), selector=number
+                )
+                magazine_number.add_xpath("magazine_number_text", "text()")
+                magazine_number.add_value(
+                    "magazine_number_link",
+                    remove_last_element_from_url(magazine_year_link)
+                    + number.xpath("@href").get(),
+                )
+                # magazine_number.add_value("magazine_id", magazine_id)
+                # magazine_number.add_value("magazine_name", magazine_name)
+                # magazine_number.add_value("magazine_year", magazine_year)
+                magazine_number.add_value("magazine_year_id", magazine_year_id)
+                yield magazine_number.load_item()
 
-    #             next_page = magazine_number.item.get("magazine_number_link")
+                # next_page = magazine_number.item.get("magazine_number_link")
 
-    #             if next_page:
-    #                 yield response.follow(
-    #                     next_page,
-    #                     callback=self.get_magazine_number_pdf,
-    #                     cb_kwargs=dict(
-    #                         magazine_name=magazine_number.item.get("magazine_name"),
-    #                         magazine_id=magazine_number.item.get("magazine_id"),
-    #                         magazine_year=magazine_number.item.get("magazine_year"),
-    #                         magazine_year_id=magazine_number.item.get(
-    #                             "magazine_year_id"
-    #                         ),
-    #                         magazine_number_text=magazine_number.item.get(
-    #                             "magazine_number_text"
-    #                         ),
-    #                         magazine_number_id=magazine_number.item.get(
-    #                             "magazine_number_id"
-    #                         ),
-    #                     ),
-    #                 )
+                # if next_page:
+                #     yield response.follow(
+                #         next_page,
+                #         callback=self.get_magazine_number_pdf,
+                #         cb_kwargs=dict(
+                #             magazine_name=magazine_number.item.get("magazine_name"),
+                #             magazine_id=magazine_number.item.get("magazine_id"),
+                #             magazine_year=magazine_number.item.get("magazine_year"),
+                #             magazine_year_id=magazine_number.item.get(
+                #                 "magazine_year_id"
+                #             ),
+                #             magazine_number_text=magazine_number.item.get(
+                #                 "magazine_number_text"
+                #             ),
+                #             magazine_number_id=magazine_number.item.get(
+                #                 "magazine_number_id"
+                #             ),
+                #         ),
+                #     )
 
-    #     # magazine years without numbers
-    #     else:
-    #         magazine_number_w = BcuMagazineNumberLoader(
-    #             item=BcuSpiderMagazineNumberItem()
-    #         )
-    #         magazine_number_w.add_value("magazine_name", magazine_name)
-    #         magazine_number_w.add_value("magazine_id", magazine_id)
-    #         magazine_number_w.add_value("magazine_year", magazine_year)
-    #         magazine_number_w.add_value("magazine_year_id", magazine_year_id)
-    #         magazine_number_w.add_value("magazine_number_text", magazine_number_text)
-    #         magazine_number_w.add_value("magazine_number_link", magazine_year_link)
-    #         yield magazine_number_w.load_item()
+        # magazine years without numbers
+        else:
+            magazine_number_w = BcuMagazineNumberLoader(
+                item=BcuSpiderMagazineNumberItem()
+            )
+            # magazine_number_w.add_value("magazine_name", magazine_name)
+            # magazine_number_w.add_value("magazine_id", magazine_id)
+            # magazine_number_w.add_value("magazine_year", magazine_year)
+            magazine_number_w.add_value("magazine_year_id", magazine_year_id)
+            magazine_number_w.add_value("magazine_number_text", magazine_number_text)
+            magazine_number_w.add_value("magazine_number_link", magazine_year_link)
+            yield magazine_number_w.load_item()
 
-    #         next_page = magazine_number_w.item.get("magazine_number_link")
+            # next_page = magazine_number_w.item.get("magazine_number_link")
 
-    #         if next_page:
-    #             magazine_name = magazine_number_w.item.get("magazine_name")
-    #             magazine_id = magazine_number_w.item.get("magazine_id")
-    #             magazine_year = magazine_number_w.item.get("magazine_year")
-    #             magazine_year_id = magazine_number_w.item.get("magazine_year_id")
-    #             magazine_number_text = magazine_number_w.item.get(
-    #                 "magazine_number_text"
-    #             )
-    #             magazine_number_id = magazine_number_w.item.get("magazine_number_id")
+            # if next_page:
+            #     magazine_name = magazine_number_w.item.get("magazine_name")
+            #     magazine_id = magazine_number_w.item.get("magazine_id")
+            #     magazine_year = magazine_number_w.item.get("magazine_year")
+            #     magazine_year_id = magazine_number_w.item.get("magazine_year_id")
+            #     magazine_number_text = magazine_number_w.item.get(
+            #         "magazine_number_text"
+            #     )
+            #     magazine_number_id = magazine_number_w.item.get("magazine_number_id")
 
-    #             yield response.follow(
-    #                 next_page,
-    #                 callback=self.get_magazine_number_pdf,
-    #                 cb_kwargs=dict(
-    #                     magazine_name=magazine_name,
-    #                     magazine_id=magazine_id,
-    #                     magazine_year=magazine_year,
-    #                     magazine_year_id=magazine_year_id,
-    #                     magazine_number_text=magazine_number_text,
-    #                     magazine_number_id=magazine_number_id,
-    #                 ),
-    #             )
+            #     yield response.follow(
+            #         next_page,
+            #         callback=self.get_magazine_number_pdf,
+            #         cb_kwargs=dict(
+            #             magazine_name=magazine_name,
+            #             magazine_id=magazine_id,
+            #             magazine_year=magazine_year,
+            #             magazine_year_id=magazine_year_id,
+            #             magazine_number_text=magazine_number_text,
+            #             magazine_number_id=magazine_number_id,
+            #         ),
+            #     )
 
     # def get_magazine_number_pdf(
     #     self,

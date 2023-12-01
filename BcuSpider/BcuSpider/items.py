@@ -84,19 +84,30 @@ class BcuSpiderMagazineYearWithoutNumbersItem(scrapy.Item):
 
 
 class BcuSpiderMagazineNumberItem(scrapy.Item):
-    # this data is coming from parse_magazine_years
-    magazine_name = scrapy.Field()
-    magazine_id = scrapy.Field()
-    magazine_year = scrapy.Field()
-    magazine_year_id = scrapy.Field()
+    # # this data is coming from parse_magazine_years
+    # magazine_name = scrapy.Field()
+    # magazine_id = scrapy.Field()
+    # magazine_year = scrapy.Field()
+    # magazine_year_id = scrapy.Field()
 
-    # added after insert
-    magazine_number_id = scrapy.Field()
+    # # added after insert
+    # magazine_number_id = scrapy.Field()
+
+    # # scrapped by parse_magazine_numbers or coming from parse_magazine_years()
+    # # (for years without numbers)
+    # magazine_number_text = scrapy.Field()
+    # magazine_number_link = scrapy.Field()
+
+    # this data is coming from parse_magazine_years
+    magazine_year_id = scrapy.Field()
 
     # scrapped by parse_magazine_numbers or coming from parse_magazine_years()
     # (for years without numbers)
     magazine_number_text = scrapy.Field()
     magazine_number_link = scrapy.Field()
+
+    # added after insert
+    id = scrapy.Field()
 
 
 class BcuSpiderMagazineContentPageItem(scrapy.Item):
