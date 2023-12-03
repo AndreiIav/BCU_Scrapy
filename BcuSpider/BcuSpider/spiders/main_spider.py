@@ -23,31 +23,22 @@ class BCUSpider(scrapy.Spider):
     start_urls = ["https://documente.bcucluj.ro/periodice.html"]
 
     wanted_magazines = [
-        'Ardealul Teatral şi Artistic (1927-1928)',
-        'Curierul Comercial, 1924',
-        'Arhiva Someşană (1924-1940)',
-    ]
-    #'Ardealul Teatral şi Artistic (1927-1928)','Curierul Comercial, 1924','Arhiva Someşană (1924-1940)', 'Democraţia (1908-1913)', 'E.M.K.E (1885-1913)'
-    not_wanted_magazines = [
-        'Abecedar (1933-1934)',
-        'Abecedar literar (1946)',
-        'Afirmarea. Literară-Socială (1936-1940)',
-        'Alge (1930-1931)',
-        'Izraelita zsebnaptar (1943-1944)',
-    ]
-    magazines_without_numbers = [
-        'Erdély Ev. Ref. Egyházkerület, évkönyve (1900- 1906)',
-        'Curierul Agronomic, 1928',
-        'Curierul Sportiv (1942-1943)',
-        'Curierul Comercial, 1924',
-        'Curierul Şcoalei, 1932',
-        'Calendarul Asociaţiunii, Sibiu (1912-1947)',
-        'Buletinul Asociaţiei Române, 1925',
+        'Anuarul Institutului de Studii Clasice (1928-1948)',
+        'Arhiva Someşană (1924-1940) ',
+        'Buletinul Asociaţiei Române, 1925 ',
         'Buletinul Ateneului Român, Oradea, 1928',
-        'Crişul Repede, 1930',
-        'Arhiva Someşană (1924-1940)',
+        'Buletinul Universităţilor (1956-1957)',
+        'Calendarul Asociaţiunii, Sibiu (1912-1947) ',
+        'Crişul Repede, 1930 ',
+        'Curierul Agronomic, 1928',
+        'Curierul Comercial, 1924 ',
+        'Curierul Şcoalei, 1932 ',
+        'Curierul Sportiv (1942-1943) ',
+        'Erdély Ev. Ref. Egyházkerület, évkönyve (1900- 1906) ',
         'Erdélyi Helikon (1928-1944)',
-        'Dacoromania (1920-1948)',
+        'Izraelita zsebnaptar (1943-1944)',
+        'Studia Universitatis "Babeş-Bolyai"(1956-1961) ',
+        'E.M.K.E (1885-1913)',
     ]
 
     def parse(self, response):
@@ -57,7 +48,6 @@ class BCUSpider(scrapy.Spider):
 
         for mag in magazines:
             if mag.xpath("text()").get() in self.wanted_magazines:
-                # if mag.xpath("text()").get() not in self.not_wanted_magazines:
                 magazine = BcuMagazineLoader(item=BcuSpiderMagazineItem(), selector=mag)
                 magazine.add_xpath("name", "text()")
                 magazine.add_xpath("magazine_link", "@href")
