@@ -115,7 +115,7 @@ FEED_EXPORT_ENCODING = "utf-8"
 # LOG settings
 LOG_FILE = "log.txt"
 LOG_FILE_APPEND = False
-# LOG_LEVEL = "WARNING"
+LOG_LEVEL = "WARNING"
 
 # Enable log duplicates filter
 DUPEFILTER_DEBUG = True

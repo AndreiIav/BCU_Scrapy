@@ -23,22 +23,7 @@ class BCUSpider(scrapy.Spider):
     start_urls = ["https://documente.bcucluj.ro/periodice.html"]
 
     wanted_magazines = [
-        'Anuarul Institutului de Studii Clasice (1928-1948)',
-        'Arhiva Someşană (1924-1940) ',
-        'Buletinul Asociaţiei Române, 1925 ',
-        'Buletinul Ateneului Român, Oradea, 1928',
-        'Buletinul Universităţilor (1956-1957)',
-        'Calendarul Asociaţiunii, Sibiu (1912-1947) ',
-        'Crişul Repede, 1930 ',
-        'Curierul Agronomic, 1928',
-        'Curierul Comercial, 1924 ',
-        'Curierul Şcoalei, 1932 ',
-        'Curierul Sportiv (1942-1943) ',
-        'Erdély Ev. Ref. Egyházkerület, évkönyve (1900- 1906) ',
-        'Erdélyi Helikon (1928-1944)',
-        'Izraelita zsebnaptar (1943-1944)',
-        'Studia Universitatis "Babeş-Bolyai"(1956-1961) ',
-        'E.M.K.E (1885-1913)',
+        'Renaşterea (1923-1950)'
     ]
 
     def parse(self, response):
