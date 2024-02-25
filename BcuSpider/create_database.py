@@ -1,6 +1,10 @@
 import sqlite3
+from scripts_settings import BASE_PATH
+from pathlib import Path
 
-conn = sqlite3.connect("test_empty.db")
+path_database = Path(BASE_PATH) / "test.db"
+
+conn = sqlite3.connect(path_database)
 conn.execute("PRAGMA foreign_keys = 1")  # to enable foreign keys
 c = conn.cursor()
 
