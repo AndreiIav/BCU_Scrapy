@@ -19,7 +19,10 @@ from BcuSpider.itemsloaders_helpers import (
     write_to_database,
     get_id_from_database,
 )
+from scripts_settings import BASE_PATH, DATABASE_NAME
 
+
+path_database = Path(BASE_PATH) / "BcuSpider"/ DATABASE_NAME
 
 class BcuMagazinesPipeline:
     def process_item(self, item, spider):
@@ -28,13 +31,13 @@ class BcuMagazinesPipeline:
             return item
 
         write_to_database(
-            "test.db",
+            path_database,
             "magazines",
             adapter.get("name"),
             adapter.get("magazine_link"),
         )
 
-        item["id"] = get_id_from_database("test.db", "magazines", adapter.get("name"))
+        item["id"] = get_id_from_database(path_database, "magazines", adapter.get("name"))
 
         return item
 
@@ -46,7 +49,7 @@ class BcuMagazineYearsPipeline:
             return item
 
         write_to_database(
-            "test.db",
+            path_database,
             "magazine_year",
             adapter.get("magazine_id"),
             adapter.get("year"),
@@ -54,7 +57,7 @@ class BcuMagazineYearsPipeline:
         )
 
         item["id"] = get_id_from_database(
-            "test.db",
+            path_database,
             "magazine_year",
             adapter.get("magazine_id"),
             adapter.get("year"),
@@ -72,7 +75,7 @@ class BcuMagazineYearsWithoutNumbersPipeline:
         # magazine years without numbers that have multiple magazine links
         if adapter.get("magazine_year_number"):
             write_to_database(
-                "test.db",
+                path_database,
                 "magazine_year",
                 adapter.get("magazine_id"),
                 adapter.get("magazine_year_name_without_numbers"),
@@ -80,7 +83,7 @@ class BcuMagazineYearsWithoutNumbersPipeline:
             )
 
             item["id"] = get_id_from_database(
-                "test.db",
+                path_database,
                 "magazine_year",
                 adapter.get("magazine_id"),
                 adapter.get("magazine_year_name_without_numbers"),
@@ -89,7 +92,7 @@ class BcuMagazineYearsWithoutNumbersPipeline:
         # magazine years without numbers that have a single magazine link
         else:
             write_to_database(
-                "test.db",
+                path_database,
                 "magazine_year",
                 adapter.get("magazine_id"),
                 adapter.get("magazine_year_name_without_numbers"),
@@ -97,7 +100,7 @@ class BcuMagazineYearsWithoutNumbersPipeline:
             )
 
             item["id"] = get_id_from_database(
-                "test.db",
+                path_database,
                 "magazine_year",
                 adapter.get("magazine_id"),
                 adapter.get("magazine_year_name_without_numbers"),
@@ -122,7 +125,7 @@ class BcuMagazineNumbersPipeline:
             )
         else:
             write_to_database(
-                "test.db",
+                path_database,
                 "magazine_number",
                 adapter.get("magazine_year_id"),
                 adapter.get("magazine_number_text"),
@@ -130,7 +133,7 @@ class BcuMagazineNumbersPipeline:
             )
 
         item["id"] = get_id_from_database(
-            "test.db",
+            path_database,
             "magazine_number",
             adapter.get("magazine_year_id"),
             adapter.get("magazine_number_text"),
@@ -158,7 +161,7 @@ class BcuNumberPageContentPipeline:
             )
 
         write_to_database(
-            "test.db",
+            path_database,
             "magazine_number_content",
             adapter.get("magazine_number_id"),
             adapter.get("magazine_content_text"),

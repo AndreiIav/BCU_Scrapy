@@ -19,8 +19,8 @@ def remove_last_element_from_url(url):
     return partition[0] + partition[1]
 
 
-def write_to_database(database_name, table, *values):
-    conn = sqlite3.connect(database_name)
+def write_to_database(database_path, table, *values):
+    conn = sqlite3.connect(database_path)
     conn.execute("PRAGMA foreign_keys = 1")  # to enable foreign keys
     c = conn.cursor()
 
@@ -56,8 +56,8 @@ def write_to_database(database_name, table, *values):
     conn.close()
 
 
-def get_id_from_database(database_name, table, *values):
-    conn = sqlite3.connect(database_name)
+def get_id_from_database(database_path, table, *values):
+    conn = sqlite3.connect(database_path)
     c = conn.cursor()
 
     # magazines table
