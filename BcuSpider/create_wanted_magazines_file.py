@@ -5,9 +5,9 @@ from utils import (
     write_wanted_magazines_file
 )
 from pathlib import Path
-from scripts_settings import BASE_PATH
+from scripts_settings import BASE_PATH, DATABASE_NAME
 
-path_database = Path(BASE_PATH) / "BcuSpider" / "test.db"
+path_database = Path(BASE_PATH) / "BcuSpider" / DATABASE_NAME
 path_list_of_magazines_not_to_be_scrapped = (Path(BASE_PATH) 
                                              / "extra" 
                                              / "list_of_magazines_not_to_be_scrapped.txt"
