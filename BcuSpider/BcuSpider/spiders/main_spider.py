@@ -26,7 +26,7 @@ class BCUSpider(scrapy.Spider):
 
     def get_wanted_magazines_from_file():
 
-        path_wanted_magazines_file = Path(BASE_PATH) / "wanted_magazines.txt"
+        path_wanted_magazines_file = Path(BASE_PATH) / "BcuSpider" / "wanted_magazines.txt"
         
         try:
             with open(path_wanted_magazines_file, encoding="utf_8") as file:
