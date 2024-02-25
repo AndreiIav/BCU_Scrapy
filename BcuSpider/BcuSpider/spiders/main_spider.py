@@ -16,16 +16,17 @@ from BcuSpider.itemsloaders import (
     BcuMagazineContentPageLoader,
 )
 from BcuSpider.itemsloaders_helpers import remove_last_element_from_url
+
 from pathlib import Path
+from scripts_settings import BASE_PATH, START_URL_BCU
 
 class BCUSpider(scrapy.Spider):
     name = "bcu"
-    start_urls = ["https://documente.bcucluj.ro/periodice.html"]
+    start_urls = [START_URL_BCU]
 
     def get_wanted_magazines_from_file():
 
-        path_wanted_magazines_file = Path(
-            r"D:\IT projects\BCU_Scrapy_Scrapper\BcuSpider\wanted_magazines.txt")
+        path_wanted_magazines_file = Path(BASE_PATH) / "wanted_magazines.txt"
         
         try:
             with open(path_wanted_magazines_file, encoding="utf_8") as file:
