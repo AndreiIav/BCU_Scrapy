@@ -5,14 +5,14 @@ from utils import (
     write_wanted_magazines_file
 )
 from pathlib import Path
+from scripts_settings import BASE_PATH
 
-current_working_directory = Path.cwd()
-path_database = current_working_directory / "BcuSpider" / "test.db"
-path_list_of_magazines_not_to_be_scrapped = (current_working_directory 
+path_database = Path(BASE_PATH) / "BcuSpider" / "test.db"
+path_list_of_magazines_not_to_be_scrapped = (Path(BASE_PATH) 
                                              / "extra" 
                                              / "list_of_magazines_not_to_be_scrapped.txt"
                                              )
-path_wanted_magazines = current_working_directory / "BcuSpider" / "wanted_magazines.txt"
+path_wanted_magazines = Path(BASE_PATH) / "BcuSpider" / "wanted_magazines.txt"
 
 already_inserted_magazine_name = get_already_inserted_magazine_name(
     path_database)
