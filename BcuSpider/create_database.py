@@ -2,7 +2,7 @@ import sqlite3
 from scripts_settings import BASE_PATH
 from pathlib import Path
 
-path_database = Path(BASE_PATH) / "test.db"
+path_database = Path(BASE_PATH) / "BcuSpider" / "test.db"
 
 conn = sqlite3.connect(path_database)
 conn.execute("PRAGMA foreign_keys = 1")  # to enable foreign keys
