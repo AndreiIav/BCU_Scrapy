@@ -2,6 +2,7 @@ import requests
 import sqlite3
 import re
 from bs4 import BeautifulSoup
+from scripts_settings import START_URL_BCU
 
 def get_already_inserted_magazine_name(path_database):
     already_inserted = []
@@ -50,18 +51,22 @@ def get_all_magazine_names_from_start_page():
     # in the start page.
     start_page_links_re = re.compile(r"web/bibdigit/periodice/(.)+$")
 
-    r = requests.get("https://documente.bcucluj.ro/periodice.html")
-    r.raise_for_status
-    soup = BeautifulSoup(r.text, "lxml")
-    all_links = soup.find_all("a")
+    try:
+        r = requests.get(START_URL_BCU)
+    except requests.exceptions.RequestException as err:
+        print(f"get_all_magazine_names_from_start_page() couldn't reach {START_URL_BCU}"
+              f" due to {err}")
+    else:
+        soup = BeautifulSoup(r.text, "lxml")
+        all_links = soup.find_all("a")
 
-    for link in all_links:
-        if link.get("href"):
-            str_to_search = link.get("href")
-            # get only the links that contain a magazine name
-            if start_page_links_re.search(str_to_search):
-                if link.string and not link.string.isspace():
-                    magazine_names_from_start_page.append(link.string)
+        for link in all_links:
+            if link.get("href"):
+                str_to_search = link.get("href")
+                # get only the links that contain a magazine name
+                if start_page_links_re.search(str_to_search):
+                    if link.string and not link.string.isspace():
+                        magazine_names_from_start_page.append(link.string)
 
     return magazine_names_from_start_page
 
