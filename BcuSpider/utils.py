@@ -1,6 +1,7 @@
 import requests
 import sqlite3
 import re
+import logging
 from bs4 import BeautifulSoup
 from scripts_settings import START_URL_BCU
 
@@ -25,6 +26,12 @@ def get_already_inserted_magazine_name(path_database):
             else:
                 for res in result:
                     already_inserted.append(res[0])
+    
+    # if already_inserted is empty, there is no record inserted in magazines table
+    # so print a warning
+    if len(already_inserted) == 0:
+        logging.warning(f"get_already_inserted_magazine_name() returns an empty list."
+                        f" Check magazines table in {path_database}.")
 
     return already_inserted
 
@@ -39,6 +46,13 @@ def get_not_wanted_magazines(path_list_of_magazines_not_to_be_scrapped):
     except FileNotFoundError:
         print(f"The 'list_of_magazines_not_to_be_scrapped.txt' does not exists at"
               f" {path_list_of_magazines_not_to_be_scrapped}")
+        
+    # if not_wanted_magazines is empty, the file is empty
+    # so print a warning
+    if len(not_wanted_magazines) == 0:
+        logging.warning(f"get_not_wanted_magazines() returns an empty list."
+                        f" Check {path_list_of_magazines_not_to_be_scrapped}"
+                         f" file if it is empty.")
 
     return not_wanted_magazines
 
@@ -54,8 +68,7 @@ def get_all_magazine_names_from_start_page():
     try:
         r = requests.get(START_URL_BCU)
     except requests.exceptions.RequestException as err:
-        print(f"get_all_magazine_names_from_start_page() couldn't reach {START_URL_BCU}"
-              f" due to {err}")
+        e = err
     else:
         soup = BeautifulSoup(r.text, "lxml")
         all_links = soup.find_all("a")
@@ -67,6 +80,12 @@ def get_all_magazine_names_from_start_page():
                 if start_page_links_re.search(str_to_search):
                     if link.string and not link.string.isspace():
                         magazine_names_from_start_page.append(link.string)
+    
+    # If magazine_names_from_start_page is empty, there was a connection
+    # issue. Print a warning with the error
+    if len(magazine_names_from_start_page) == 0:
+        logging.warning(f"get_all_magazine_names_from_start_page() returns an empty list"
+                        f" because of the followng request excception: {e}")
 
     return magazine_names_from_start_page
 
@@ -75,20 +94,26 @@ def write_wanted_magazines_file(all_magazine_names_from_start_page,
                                 already_inserted_magazine_name,
                                 not_wanted_magazines,
                                 path_wanted_magazines):
-
-    for name in all_magazine_names_from_start_page:
-        if (name not in already_inserted_magazine_name and
-            name not in not_wanted_magazines
-            ):
-            with open(path_wanted_magazines, "a", encoding="utf_8") as f:
-                f.write(name + "\n")
-
-    # check if wanted_magazines.txt file was created
-    # and print a confirmation message
+    
+    # if path_wanted_magazines already exists, don't do anything
+    # but print a warning message
     if path_wanted_magazines.is_file():
-        print("wanted_magazines.txt file was created.")
-    # if the file doesn't exists there was no magazine name
-    # to write in the file
+        print("wanted_magazines.txt already exists. Remove it before attempting"
+              " to create a new one.")
     else:
-        print("wanted_magazines.txt file was not created because there was"
-              " no magazine name to be written in the file.")
+        for name in all_magazine_names_from_start_page:
+            if (name not in already_inserted_magazine_name and
+                name not in not_wanted_magazines
+                ):
+                with open(path_wanted_magazines, "a", encoding="utf_8") as f:
+                    f.write(name + "\n")
+
+        # check if wanted_magazines.txt file was created
+        # and print a confirmation message
+        if path_wanted_magazines.is_file():
+            print("wanted_magazines.txt file was created.")
+        # if the file doesn't exists there was no magazine name
+        # to write in the file
+        else:
+            print("wanted_magazines.txt file was not created because there was"
+                " no magazine name to be written in the file.")
