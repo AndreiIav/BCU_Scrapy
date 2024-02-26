@@ -31,9 +31,13 @@ def get_already_inserted_magazine_name(path_database):
 def get_not_wanted_magazines(path_list_of_magazines_not_to_be_scrapped):
     not_wanted_magazines = []
 
-    with open(path_list_of_magazines_not_to_be_scrapped, encoding="utf_8") as f:
-        for line in f:
-            not_wanted_magazines.append(line.strip())
+    try:
+        with open(path_list_of_magazines_not_to_be_scrapped, encoding="utf_8") as f:
+            for line in f:
+                not_wanted_magazines.append(line.strip())
+    except FileNotFoundError:
+        print(f"The 'list_of_magazines_not_to_be_scrapped.txt' does not exists at"
+              f" {path_list_of_magazines_not_to_be_scrapped}")
 
     return not_wanted_magazines
 
