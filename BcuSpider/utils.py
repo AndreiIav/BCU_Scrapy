@@ -6,11 +6,24 @@ from bs4 import BeautifulSoup
 def get_already_inserted_magazine_name(path_database):
     already_inserted = []
 
-    conn = sqlite3.connect(path_database)
-    c = conn.cursor()
-    c.execute("SELECT name FROM magazines")
-    for res in c.fetchall():
-        already_inserted.append(res[0])
+    try:
+        #This will open an existing database, but will raise an
+        #error in case that file can not be opened or does not exist
+        conn = sqlite3.connect(f"file:{path_database}?mode=rw", uri=True)
+    except sqlite3.OperationalError as err:
+        print(f"'sqlite3.OperationalError: {err}' error raised because"
+              f" there is no database at {path_database}")
+    else:
+        c = conn.cursor()
+
+        with conn:
+            try:
+                result = c.execute("SELECT name FROM magazines").fetchall()
+            except sqlite3.OperationalError as err:
+                    print(f"'sqlite3.OperationalError: {err}' error raised.")
+            else:
+                for res in result:
+                    already_inserted.append(res[0])
 
     return already_inserted
 
