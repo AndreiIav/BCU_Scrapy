@@ -9,29 +9,35 @@ def get_already_inserted_magazine_name(path_database):
     already_inserted = []
 
     try:
-        #This will open an existing database, but will raise an
-        #error in case that file can not be opened or does not exist
+        # This will open an existing database, but will raise an
+        # error in case that file can not be opened or does not exist
         conn = sqlite3.connect(f"file:{path_database}?mode=rw", uri=True)
     except sqlite3.OperationalError as err:
         print(f"'sqlite3.OperationalError: {err}' error raised because"
-              f" there is no database at {path_database}")
+              f" there is no database at {path_database}"
+              )
     else:
         c = conn.cursor()
 
         with conn:
             try:
+                # Check if magazines table exists in db
                 result = c.execute("SELECT name FROM magazines").fetchall()
             except sqlite3.OperationalError as err:
-                    print(f"'sqlite3.OperationalError: {err}' error raised.")
+                print(f"'sqlite3.OperationalError: {err}' error raised"
+                      f" in get_already_inserted_magazine_name()."
+                      )
             else:
                 for res in result:
                     already_inserted.append(res[0])
     
     # if already_inserted is empty, there is no record inserted in magazines table
+    # or magazines table is missing from db
     # so print a warning
     if len(already_inserted) == 0:
         logging.warning(f"get_already_inserted_magazine_name() returns an empty list."
-                        f" Check magazines table in {path_database}.")
+                        f" Check magazines table in {path_database}."
+                        )
 
     return already_inserted
 
@@ -52,7 +58,8 @@ def get_not_wanted_magazines(path_list_of_magazines_not_to_be_scrapped):
     if len(not_wanted_magazines) == 0:
         logging.warning(f"get_not_wanted_magazines() returns an empty list."
                         f" Check {path_list_of_magazines_not_to_be_scrapped}"
-                         f" file if it is empty.")
+                         f" file if it is empty."
+                        )
 
     return not_wanted_magazines
 
@@ -93,13 +100,14 @@ def get_all_magazine_names_from_start_page():
 def write_wanted_magazines_file(all_magazine_names_from_start_page,
                                 already_inserted_magazine_name,
                                 not_wanted_magazines,
-                                path_wanted_magazines):
+                                path_wanted_magazines
+                                ):
     
     # if path_wanted_magazines already exists, don't do anything
     # but print a warning message
     if path_wanted_magazines.is_file():
-        print("wanted_magazines.txt already exists. Remove it before attempting"
-              " to create a new one.")
+        print(f"{path_wanted_magazines} already exists. Remove it before attempting"
+              f" to create a new one.")
     else:
         for name in all_magazine_names_from_start_page:
             if (name not in already_inserted_magazine_name and
@@ -115,5 +123,6 @@ def write_wanted_magazines_file(all_magazine_names_from_start_page,
         # if the file doesn't exists there was no magazine name
         # to write in the file
         else:
-            print("wanted_magazines.txt file was not created because there was"
-                " no magazine name to be written in the file.")
+            print(f"{path_wanted_magazines} file was not created because there was"
+                  " no magazine name to be written in the file."
+                  )
