@@ -18,7 +18,9 @@ from BcuSpider.itemsloaders import (
 from BcuSpider.itemsloaders_helpers import remove_last_element_from_url
 
 from pathlib import Path
-from scripts_settings import BASE_PATH, START_URL_BCU
+from scripts_settings import BASE_PATH, START_URL_BCU, DATABASE_NAME
+import sqlite3
+import logging
 
 class BCUSpider(scrapy.Spider):
     name = "bcu"
@@ -39,6 +41,23 @@ class BCUSpider(scrapy.Spider):
     wanted_magazines = get_wanted_magazines_from_file()
 
     def parse(self, response):
+
+        # check if database file exists
+        # if not, close the spider
+        path_database = Path(BASE_PATH) / "BcuSpider" / DATABASE_NAME
+        try:
+            # This will open an existing database, but will raise an
+            # error in case that file can not be opened or does not exist
+            conn = sqlite3.connect(f"file:{path_database}?mode=rw", uri=True)
+        except sqlite3.OperationalError as e:
+            logging.critical(f"Scrapper stopped because 'sqlite3.OperationalError: {e}'"
+                             f" error was raised."
+                             f" The .db file is not present at {path_database}"
+            )
+            raise scrapy.exceptions.CloseSpider()
+        else:
+            conn.close()
+        
         magazines = response.xpath(
             "//div//a[contains(@href, 'web/bibdigit/periodice') and not(contains(@href, '.pdf')) and normalize-space(text())]"
         )
