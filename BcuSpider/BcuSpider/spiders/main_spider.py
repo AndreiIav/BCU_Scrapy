@@ -30,8 +30,10 @@ class BCUSpider(scrapy.Spider):
 
     def get_wanted_magazines_from_file():
 
-        path_wanted_magazines_file = Path(BASE_PATH) / "BcuSpider" / "wanted_magazines.txt"
-        
+        path_wanted_magazines_file = (
+            Path(BASE_PATH) / "BcuSpider" / "wanted_magazines.txt"
+        )
+
         try:
             with open(path_wanted_magazines_file, encoding="utf_8") as file:
                 magazines = [magazine.strip() for magazine in file]
@@ -52,16 +54,17 @@ class BCUSpider(scrapy.Spider):
             # error in case that file can not be opened or does not exist
             conn = sqlite3.connect(f"file:{path_database}?mode=rw", uri=True)
         except sqlite3.OperationalError as e:
-            logging.critical(f"Scrapper stopped because 'sqlite3.OperationalError: {e}'"
-                             f" error was raised."
-                             f" The .db file is not present at {path_database}"
+            logging.critical(
+                f"Scrapper stopped because 'sqlite3.OperationalError: {e}'"
+                f" error was raised."
+                f" The .db file is not present at {path_database}"
             )
             raise scrapy.exceptions.CloseSpider()
         else:
             conn.close()
-        
+
         magazines = response.xpath(
-            "//div//a[contains(@href, 'web/bibdigit/periodice') and" 
+            "//div//a[contains(@href, 'web/bibdigit/periodice') and"
             " not(contains(@href, '.pdf')) and normalize-space(text())]"
         )
 
@@ -116,8 +119,7 @@ class BCUSpider(scrapy.Spider):
         )
         for year_number in magazine_years_numbers:
             magazine_year_number = BcuMagazineYearWithoutNumbersLoader(
-                item=BcuSpiderMagazineYearWithoutNumbersItem(),
-                selector=year_number
+                item=BcuSpiderMagazineYearWithoutNumbersItem(), selector=year_number
             )
             magazine_year_number.add_value("magazine_id", magazine_id)
             year = year_number.xpath(
@@ -154,16 +156,12 @@ class BCUSpider(scrapy.Spider):
         )
         for year_year in magazine_years_year:
             magazine_year_year = BcuMagazineYearWithoutNumbersLoader(
-                item=BcuSpiderMagazineYearWithoutNumbersItem(),
-                selector=year_year
+                item=BcuSpiderMagazineYearWithoutNumbersItem(), selector=year_year
             )
             magazine_year_year.add_value("magazine_id", magazine_id)
-            magazine_year_year.add_xpath("magazine_year_name_without_numbers",
-                                         "text()"
-            )
+            magazine_year_year.add_xpath("magazine_year_name_without_numbers", "text()")
             magazine_year_year.add_value(
-                "magazine_year_link",
-                magazine_link + year_year.xpath("@href").get()
+                "magazine_year_link", magazine_link + year_year.xpath("@href").get()
             )
             yield magazine_year_year.load_item()
 
@@ -199,8 +197,7 @@ class BCUSpider(scrapy.Spider):
 
             for number in magazine_numbers:
                 magazine_number = BcuMagazineNumberLoader(
-                    item=BcuSpiderMagazineNumberItem(),
-                    selector=number
+                    item=BcuSpiderMagazineNumberItem(), selector=number
                 )
                 magazine_number.add_xpath("magazine_number_text", "text()")
                 magazine_number.add_value(
@@ -260,12 +257,9 @@ class BCUSpider(scrapy.Spider):
                     "magazine_number_id", magazine_number_id
                 )
 
-                magazine_content_page.add_value("magazine_content_page",
-                                                 page + 1
-                )
+                magazine_content_page.add_value("magazine_content_page", page + 1)
                 magazine_content_page.add_value(
-                    "magazine_content_text",
-                    p.extract_text()
+                    "magazine_content_text", p.extract_text()
                 )
 
                 yield magazine_content_page.load_item()

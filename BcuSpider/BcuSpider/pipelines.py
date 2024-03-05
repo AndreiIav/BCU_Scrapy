@@ -23,7 +23,8 @@ from BcuSpider.itemsloaders_helpers import (
 from scripts_settings import BASE_PATH, DATABASE_NAME
 
 
-path_database = Path(BASE_PATH) / "BcuSpider"/ DATABASE_NAME
+path_database = Path(BASE_PATH) / "BcuSpider" / DATABASE_NAME
+
 
 class BcuMagazinesPipeline:
     def process_item(self, item, spider):
@@ -38,7 +39,9 @@ class BcuMagazinesPipeline:
             adapter.get("magazine_link"),
         )
 
-        item["id"] = get_id_from_database(path_database, "magazines", adapter.get("name"))
+        item["id"] = get_id_from_database(
+            path_database, "magazines", adapter.get("name")
+        )
 
         return item
 
