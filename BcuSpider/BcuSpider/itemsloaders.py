@@ -4,7 +4,9 @@ from scrapy.loader import ItemLoader
 
 class BcuMagazineLoader(ItemLoader):
     default_output_processor = TakeFirst()
-    magazine_link_in = MapCompose(lambda x: "https://documente.bcucluj.ro/" + x.strip(), lambda x: x + '/' if x[-1] != '/' else x)
+    magazine_link_in = MapCompose(lambda x: "https://documente.bcucluj.ro/" + x.strip(),
+                                  lambda x: x + '/' if x[-1] != '/' else x
+    )
 
 
 class BcuMagazineYearLoader(ItemLoader):

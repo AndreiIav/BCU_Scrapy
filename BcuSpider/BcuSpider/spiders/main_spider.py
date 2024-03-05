@@ -1,6 +1,11 @@
 import io
-from PyPDF2 import PdfReader
+import sqlite3
+import logging
+from pathlib import Path
+
 import scrapy
+from PyPDF2 import PdfReader
+
 from BcuSpider.items import (
     BcuSpiderMagazineItem,
     BcuSpiderMagazineYearItem,
@@ -16,11 +21,8 @@ from BcuSpider.itemsloaders import (
     BcuMagazineContentPageLoader,
 )
 from BcuSpider.itemsloaders_helpers import remove_last_element_from_url
-
-from pathlib import Path
 from scripts_settings import BASE_PATH, START_URL_BCU, DATABASE_NAME
-import sqlite3
-import logging
+
 
 class BCUSpider(scrapy.Spider):
     name = "bcu"
