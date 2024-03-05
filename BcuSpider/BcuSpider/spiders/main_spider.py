@@ -59,7 +59,8 @@ class BCUSpider(scrapy.Spider):
             conn.close()
         
         magazines = response.xpath(
-            "//div//a[contains(@href, 'web/bibdigit/periodice') and not(contains(@href, '.pdf')) and normalize-space(text())]"
+            "//div//a[contains(@href, 'web/bibdigit/periodice') and" 
+            " not(contains(@href, '.pdf')) and normalize-space(text())]"
         )
 
         for mag in magazines:
@@ -75,13 +76,12 @@ class BCUSpider(scrapy.Spider):
                         next_page,
                         callback=self.parse_magazine_years,
                         cb_kwargs=dict(
-                            magazine_name=magazine.item.get("name"),
                             magazine_link=magazine.item.get("magazine_link"),
                             magazine_id=magazine.item.get("id"),
                         ),
                     )
 
-    def parse_magazine_years(self, response, magazine_name, magazine_link, magazine_id):
+    def parse_magazine_years(self, response, magazine_link, magazine_id):
         magazine_years = response.xpath(
             "//a[contains(@href, 'html') and contains(text(), 'ANUL')]"
         )
@@ -114,9 +114,9 @@ class BCUSpider(scrapy.Spider):
         )
         for year_number in magazine_years_numbers:
             magazine_year_number = BcuMagazineYearWithoutNumbersLoader(
-                item=BcuSpiderMagazineYearWithoutNumbersItem(), selector=year_number
+                item=BcuSpiderMagazineYearWithoutNumbersItem(),
+                selector=year_number
             )
-            # magazine_year_number.add_value("magazine_name", magazine_name)
             magazine_year_number.add_value("magazine_id", magazine_id)
             year = year_number.xpath(
                 ".//span[contains(@class, 'central')]/text()"
@@ -152,12 +152,16 @@ class BCUSpider(scrapy.Spider):
         )
         for year_year in magazine_years_year:
             magazine_year_year = BcuMagazineYearWithoutNumbersLoader(
-                item=BcuSpiderMagazineYearWithoutNumbersItem(), selector=year_year
+                item=BcuSpiderMagazineYearWithoutNumbersItem(),
+                selector=year_year
             )
             magazine_year_year.add_value("magazine_id", magazine_id)
-            magazine_year_year.add_xpath("magazine_year_name_without_numbers", "text()")
+            magazine_year_year.add_xpath("magazine_year_name_without_numbers",
+                                         "text()"
+            )
             magazine_year_year.add_value(
-                "magazine_year_link", magazine_link + year_year.xpath("@href").get()
+                "magazine_year_link",
+                magazine_link + year_year.xpath("@href").get()
             )
             yield magazine_year_year.load_item()
 
@@ -193,7 +197,8 @@ class BCUSpider(scrapy.Spider):
 
             for number in magazine_numbers:
                 magazine_number = BcuMagazineNumberLoader(
-                    item=BcuSpiderMagazineNumberItem(), selector=number
+                    item=BcuSpiderMagazineNumberItem(),
+                    selector=number
                 )
                 magazine_number.add_xpath("magazine_number_text", "text()")
                 magazine_number.add_value(
@@ -253,9 +258,12 @@ class BCUSpider(scrapy.Spider):
                     "magazine_number_id", magazine_number_id
                 )
 
-                magazine_content_page.add_value("magazine_content_page", page + 1)
+                magazine_content_page.add_value("magazine_content_page",
+                                                 page + 1
+                )
                 magazine_content_page.add_value(
-                    "magazine_content_text", p.extract_text()
+                    "magazine_content_text",
+                    p.extract_text()
                 )
 
                 yield magazine_content_page.load_item()
