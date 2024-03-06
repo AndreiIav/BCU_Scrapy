@@ -1,0 +1,11 @@
+1.To run the scrapper:
+   - activate the venv from base_folder
+   - go to base_folder\BcuSpider and run 'scrapy crawl bcu' in cmd
+2. In order for the scrapper to run, a sqlite database needs to exist in base_folder\BcuSpider.
+   A new database with the correct schema can be created by running the 'create_database.py'script.
+3. In order for the scrapper to run, a 'wanted_magazines.txt' file needs to exists in base_folder\BcuSpider.
+   The file and the names of magazines needed for scrapping can be added manually (every magazine name on a
+   new line).
+   Or, by running the 'create_wanted_magazines_file.py' scrip a new 'wanted_magazines.txt' file will be
+   created by checking what magazine name exists at "https://documente.bcucluj.ro/periodice.html" but not
+   in the magazines table. 
