@@ -6,6 +6,6 @@
 3. In order for the scrapper to run, a 'wanted_magazines.txt' file needs to exists in base_folder\BcuSpider.
    The file and the names of magazines needed for scrapping can be added manually (every magazine name on a
    new line).
-   Or, by running the 'create_wanted_magazines_file.py' scrip a new 'wanted_magazines.txt' file will be
+   Or, by running the 'create_wanted_magazines_file.py' script a new 'wanted_magazines.txt' file will be
    created by checking what magazine name exists at "https://documente.bcucluj.ro/periodice.html" but not
    in the magazines table. 
