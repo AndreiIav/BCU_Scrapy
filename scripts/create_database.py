@@ -1,7 +1,7 @@
 import sqlite3
 from pathlib import Path
 
-from scripts.scripts_config import BASE_PATH, DATABASE_NAME
+from scripts_config import BASE_PATH, DATABASE_NAME
 
 
 path_database = Path(BASE_PATH) / "BcuSpider" / DATABASE_NAME

@@ -5,7 +5,7 @@ import logging
 
 from bs4 import BeautifulSoup
 
-from scripts.scripts_config import START_URL_BCU
+from scripts_config import START_URL_BCU
 
 
 def get_already_inserted_magazine_name(path_database):
