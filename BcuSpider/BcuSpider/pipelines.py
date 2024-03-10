@@ -20,7 +20,7 @@ from BcuSpider.itemsloaders_helpers import (
     write_to_database,
     get_id_from_database,
 )
-from scripts_settings import BASE_PATH, DATABASE_NAME
+from spider_config import BASE_PATH, DATABASE_NAME
 
 
 path_database = Path(BASE_PATH) / "BcuSpider" / DATABASE_NAME
