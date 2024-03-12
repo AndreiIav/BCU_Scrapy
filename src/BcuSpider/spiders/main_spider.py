@@ -21,7 +21,7 @@ from BcuSpider.itemsloaders import (
     BcuMagazineContentPageLoader,
 )
 from BcuSpider.itemsloaders_helpers import remove_last_element_from_url
-from spider_config import BASE_PATH, START_URL_BCU, DATABASE_NAME
+from scripts.scripts_config import BASE_PATH, START_URL_BCU, DATABASE_NAME
 
 
 class BCUSpider(scrapy.Spider):
@@ -30,9 +30,7 @@ class BCUSpider(scrapy.Spider):
 
     def get_wanted_magazines_from_file():
 
-        path_wanted_magazines_file = (
-            Path(BASE_PATH) / "BcuSpider" / "wanted_magazines.txt"
-        )
+        path_wanted_magazines_file = Path(BASE_PATH) / "wanted_magazines.txt"
 
         try:
             with open(path_wanted_magazines_file, encoding="utf_8") as file:
@@ -48,7 +46,7 @@ class BCUSpider(scrapy.Spider):
 
         # check if database file exists
         # if not, close the spider
-        path_database = Path(BASE_PATH) / "BcuSpider" / DATABASE_NAME
+        path_database = Path(BASE_PATH) / DATABASE_NAME
         try:
             # This will open an existing database, but will raise an
             # error in case that file can not be opened or does not exist

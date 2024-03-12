@@ -5,3 +5,4 @@ log.txt
 extra/
 *db
 wanted_magazines.txt
+scrapy.cfg

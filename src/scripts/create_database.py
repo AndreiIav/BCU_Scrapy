@@ -3,8 +3,7 @@ from pathlib import Path
 
 from scripts_config import BASE_PATH, DATABASE_NAME
 
-
-path_database = Path(BASE_PATH) / "BcuSpider" / DATABASE_NAME
+path_database = Path(BASE_PATH) / DATABASE_NAME
 
 conn = sqlite3.connect(path_database)
 conn.execute("PRAGMA foreign_keys = 1")  # to enable foreign keys

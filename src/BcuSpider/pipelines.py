@@ -20,10 +20,9 @@ from BcuSpider.itemsloaders_helpers import (
     write_to_database,
     get_id_from_database,
 )
-from spider_config import BASE_PATH, DATABASE_NAME
+from scripts.scripts_config import BASE_PATH, DATABASE_NAME
 
-
-path_database = Path(BASE_PATH) / "BcuSpider" / DATABASE_NAME
+path_database = Path(BASE_PATH) / DATABASE_NAME
 
 
 class BcuMagazinesPipeline:
