@@ -21,7 +21,11 @@ from BcuSpider.itemsloaders import (
     BcuMagazineContentPageLoader,
 )
 from BcuSpider.itemsloaders_helpers import remove_last_element_from_url
-from scripts.scripts_config import BASE_PATH, START_URL_BCU, DATABASE_NAME
+from scripts.scripts_config import (
+    BASE_PATH,
+    START_URL_BCU,
+    DATABASE_NAME,
+)
 
 
 class BCUSpider(scrapy.Spider):

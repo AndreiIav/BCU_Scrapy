@@ -6,16 +6,18 @@ from utils import (
     get_all_magazine_names_from_start_page,
     write_wanted_magazines_file,
 )
+
 from scripts_config import BASE_PATH, DATABASE_NAME
 
 path_database = Path(BASE_PATH) / DATABASE_NAME
 path_list_of_magazines_not_to_be_scrapped = (
     Path(BASE_PATH) / "extra" / "list_of_magazines_not_to_be_scrapped.txt"
 )
+
 path_wanted_magazines = Path(BASE_PATH) / "wanted_magazines.txt"
 
 
-def main():
+def create_wanted_magazine_file():
 
     already_inserted_magazine_name = get_already_inserted_magazine_name(path_database)
 
@@ -33,4 +35,5 @@ def main():
     )
 
 
-main()
+if __name__ == "__main__":
+    create_wanted_magazine_file()
