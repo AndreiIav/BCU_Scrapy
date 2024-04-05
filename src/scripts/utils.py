@@ -64,10 +64,10 @@ def get_not_wanted_magazines(path_list_of_magazines_not_to_be_scrapped):
     # if not_wanted_magazines is empty, the file is empty
     # so print a warning
     if len(not_wanted_magazines) == 0:
-        logging.warning(
-            f"get_not_wanted_magazines() returns an empty list."
+        print(
+            "get_not_wanted_magazines() returns an empty list."
             f" Check {path_list_of_magazines_not_to_be_scrapped}"
-            f" file if it is empty."
+            " file if it is empty."
         )
 
     return not_wanted_magazines

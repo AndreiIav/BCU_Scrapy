@@ -1,4 +1,4 @@
-from scripts.utils import get_already_inserted_magazine_name
+from scripts.utils import get_already_inserted_magazine_name, get_not_wanted_magazines
 
 
 class TestGetAlreadyInsertedMagazineName:
@@ -53,3 +53,51 @@ class TestGetAlreadyInsertedMagazineName:
 
         assert len(already_inserted_magazines) == len(inserted_values)
         assert already_inserted_magazines == inserted_values
+
+
+class TestGetNotWantedMagazines:
+
+    def test_get_not_wanted_magazines_file_does_not_exists(self, tmp_path, capsys):
+
+        file_path = tmp_path / "file.txt"
+
+        res = get_not_wanted_magazines(file_path)
+        out, _ = capsys.readouterr()
+
+        assert (
+            "The 'list_of_magazines_not_to_be_scrapped.txt' does not exists at"
+            f" {file_path}" in out
+        )
+        assert res == []
+
+    def test_get_not_wanted_magazines_with_empty_file(
+        self, capsys, create_not_wanted_magazines_test_file
+    ):
+
+        file_path = create_not_wanted_magazines_test_file
+
+        res = get_not_wanted_magazines(file_path)
+        out, _ = capsys.readouterr()
+
+        assert (
+            "The 'list_of_magazines_not_to_be_scrapped.txt' does not exists at"
+            f" {file_path}" not in out
+        )
+
+        assert (
+            "get_not_wanted_magazines() returns an empty list."
+            f" Check {file_path}"
+            " file if it is empty." in out
+        )
+
+        assert res == []
+
+    def test_get_not_wanted_magazines_with_data_in_file(
+        self, add_data_to_not_wanted_magazines_test_file
+    ):
+
+        file_path, file_values = add_data_to_not_wanted_magazines_test_file
+
+        res = get_not_wanted_magazines(file_path)
+
+        assert res == file_values

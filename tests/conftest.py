@@ -72,3 +72,28 @@ def add_data_to_magazines_table(create_db_tables):
             )
 
     yield path_db, values_to_be_inserted
+
+
+@pytest.fixture
+def create_not_wanted_magazines_test_file(tmp_path):
+
+    target_file = tmp_path / "test_file.txt"
+
+    with open(target_file, "x") as f:
+        f.write("")
+
+    return target_file
+
+
+@pytest.fixture
+def add_data_to_not_wanted_magazines_test_file(create_not_wanted_magazines_test_file):
+
+    target_file = create_not_wanted_magazines_test_file
+
+    data_to_be_written_in_file = ["Magazine_4", "Magazine_5"]
+
+    with open(target_file, "a") as f:
+        for data in data_to_be_written_in_file:
+            f.write(data + "\n")
+
+    return target_file, data_to_be_written_in_file
