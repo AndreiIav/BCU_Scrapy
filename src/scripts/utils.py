@@ -40,7 +40,7 @@ def get_already_inserted_magazine_name(path_database):
     # or magazines table is missing from db
     # so print a warning
     if len(already_inserted) == 0:
-        logging.warning(
+        print(
             f"get_already_inserted_magazine_name() returns an empty list."
             f" Check magazines table in {path_database}."
         )
