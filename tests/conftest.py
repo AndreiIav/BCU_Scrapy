@@ -1,5 +1,54 @@
 import pytest
 import sqlite3
+import requests
+
+# Helper Classes
+
+
+class MockSuccessResponseFromStartPage(object):
+    def __init__(self, url):
+        self.status_code = 200
+        self.url = url
+        self.text = self.html_response()
+
+    def html_response(self):
+        return """
+        <!DOCTYPE html>
+        <html>
+        <head>
+        <title>Page Title</title>
+        </head>
+        <body>
+
+        <table>
+          <tr>
+           <td>
+             <a href="web/bibdigit/periodice/Magazine_1/">Magazine_1</a>
+           </td>
+          </tr>
+          <tr>
+           <td>
+             <a href="web/bibdigit/periodice/Magazine_2/">Magazine_2</a>
+           </td>
+          </tr>
+        </table>
+        
+        </body>
+        </html> 
+        """
+
+
+# Fixtures
+
+
+@pytest.fixture
+def mock_get_all_magazine_names_from_start_page_success_response(monkeypatch):
+
+    def mock_get(url):
+        return MockSuccessResponseFromStartPage(url)
+
+    url = "start_url"
+    monkeypatch.setattr(requests, "get", mock_get)
 
 
 @pytest.fixture

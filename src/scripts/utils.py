@@ -5,8 +5,6 @@ import logging
 
 from bs4 import BeautifulSoup
 
-from scripts_config import START_URL_BCU
-
 
 def get_already_inserted_magazine_name(path_database):
     already_inserted = []
@@ -73,16 +71,13 @@ def get_not_wanted_magazines(path_list_of_magazines_not_to_be_scrapped):
     return not_wanted_magazines
 
 
-def get_all_magazine_names_from_start_page():
+def get_all_magazine_names_from_start_page(url, regular_expression):
 
     magazine_names_from_start_page = []
-
-    # Regex for extracting the correct links of the magazines found
-    # in the start page.
-    start_page_links_re = re.compile(r"web/bibdigit/periodice/(.)+$")
+    start_page_links_re = re.compile(regular_expression)
 
     try:
-        r = requests.get(START_URL_BCU)
+        r = requests.get(url)
     except requests.exceptions.RequestException as err:
         e = err
     else:

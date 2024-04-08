@@ -1,4 +1,10 @@
-from scripts.utils import get_already_inserted_magazine_name, get_not_wanted_magazines
+from scripts.utils import (
+    get_already_inserted_magazine_name,
+    get_not_wanted_magazines,
+    get_all_magazine_names_from_start_page,
+)
+
+from scripts.scripts_config import MAGAZINE_LINKS_REGEX
 
 
 class TestGetAlreadyInsertedMagazineName:
@@ -101,3 +107,14 @@ class TestGetNotWantedMagazines:
         res = get_not_wanted_magazines(file_path)
 
         assert res == file_values
+
+
+class TestGetAllMagazineNamesFromStartPage:
+
+    def test_get_all_magazine_names_from_start_page_success(
+        self, mock_get_all_magazine_names_from_start_page_success_response
+    ):
+        regular_expression = MAGAZINE_LINKS_REGEX
+        res = get_all_magazine_names_from_start_page("url", regular_expression)
+
+        assert res == ["Magazine_1", "Magazine_2"]

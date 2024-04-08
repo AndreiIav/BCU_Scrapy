@@ -7,7 +7,7 @@ from utils import (
     write_wanted_magazines_file,
 )
 
-from scripts_config import BASE_PATH, DATABASE_NAME
+from scripts_config import BASE_PATH, DATABASE_NAME, START_URL_BCU, MAGAZINE_LINKS_REGEX
 
 path_database = Path(BASE_PATH) / DATABASE_NAME
 path_list_of_magazines_not_to_be_scrapped = (
@@ -25,7 +25,9 @@ def create_wanted_magazine_file():
         path_list_of_magazines_not_to_be_scrapped
     )
 
-    all_magazine_names_from_start_page = get_all_magazine_names_from_start_page()
+    all_magazine_names_from_start_page = get_all_magazine_names_from_start_page(
+        START_URL_BCU, MAGAZINE_LINKS_REGEX
+    )
 
     write_wanted_magazines_file(
         all_magazine_names_from_start_page,
