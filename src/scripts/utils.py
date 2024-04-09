@@ -120,7 +120,7 @@ def write_wanted_magazines_file(
     if path_wanted_magazines.is_file():
         print(
             f"{path_wanted_magazines} already exists. Remove it before attempting"
-            f" to create a new one."
+            " to create a new one."
         )
     else:
         for name in all_magazine_names_from_start_page:

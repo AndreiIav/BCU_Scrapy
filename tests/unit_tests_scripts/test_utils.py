@@ -1,7 +1,10 @@
+import pytest
+
 from scripts.utils import (
     get_already_inserted_magazine_name,
     get_not_wanted_magazines,
     get_all_magazine_names_from_start_page,
+    write_wanted_magazines_file,
 )
 from scripts.scripts_config import MAGAZINE_LINKS_REGEX
 
@@ -76,10 +79,10 @@ class TestGetNotWantedMagazines:
         assert res == []
 
     def test_get_not_wanted_magazines_with_empty_file(
-        self, capsys, create_not_wanted_magazines_test_file
+        self, capsys, create_empty_test_file
     ):
 
-        file_path = create_not_wanted_magazines_test_file
+        file_path = create_empty_test_file
 
         res = get_not_wanted_magazines(file_path)
         out, _ = capsys.readouterr()
@@ -198,3 +201,85 @@ class TestGetAllMagazineNamesFromStartPage:
 
         assert f"{url} cannot be reached due to a Request Exception." in out
         assert warning_message in out
+
+
+class TestWriteWantedMagazinesFile:
+
+    def test_write_wanted_magazines_file_already_exists(
+        self, capsys, create_empty_test_file
+    ):
+
+        path_wanted_magazines = create_empty_test_file
+
+        write_wanted_magazines_file("", "", "", path_wanted_magazines)
+        out, _ = capsys.readouterr()
+
+        assert (
+            f"{path_wanted_magazines} already exists. Remove it before attempting"
+            " to create a new one." in out
+        )
+
+    def test_write_wanted_magazines_file_not_created(self, capsys, tmp_path):
+
+        all_magazine_names_from_start_page = ["Magazine_1"]
+        already_inserted_magazine_name = ["Magazine_1"]
+        not_wanted_magazines = []
+        path_wanted_magazines = tmp_path / "test_file.txt"
+
+        write_wanted_magazines_file(
+            all_magazine_names_from_start_page,
+            already_inserted_magazine_name,
+            not_wanted_magazines,
+            path_wanted_magazines,
+        )
+        out, _ = capsys.readouterr()
+
+        assert (
+            f"{path_wanted_magazines} file was not created because there was"
+            " no magazine name to be written in the file." in out
+        )
+
+    def test_write_wanted_magazines_file_is_created(self, capsys, tmp_path):
+
+        all_magazine_names_from_start_page = ["Magazine_1"]
+        already_inserted_magazine_name = []
+        not_wanted_magazines = []
+        path_wanted_magazines = tmp_path / "test_file.txt"
+
+        write_wanted_magazines_file(
+            all_magazine_names_from_start_page,
+            already_inserted_magazine_name,
+            not_wanted_magazines,
+            path_wanted_magazines,
+        )
+        out, _ = capsys.readouterr()
+
+        assert "wanted_magazines.txt file was created." in out
+
+    test_values = [
+        (["a", "b", "c"], [], [], ["a", "b", "c"]),
+        (["a", "b", "c"], ["a"], [], ["b", "c"]),
+        (["a", "b", "c"], [], ["b"], ["a", "c"]),
+        (["a", "b", "c"], ["d"], ["e"], ["a", "b", "c"]),
+        (["a", "b", "c", "d"], ["a"], ["b", "c"], ["d"]),
+    ]
+
+    @pytest.mark.parametrize(
+        "all_magazines,already_inserted,not_wanted,expected", test_values
+    )
+    def test_write_wanted_magazines_file_is_correct(
+        self, tmp_path, all_magazines, already_inserted, not_wanted, expected
+    ):
+        path_wanted_magazines = tmp_path / "test_file.txt"
+
+        write_wanted_magazines_file(
+            all_magazines,
+            already_inserted,
+            not_wanted,
+            path_wanted_magazines,
+        )
+        with open(path_wanted_magazines) as f:
+            content = f.read()
+            file_content = content.split()
+
+        assert file_content == expected

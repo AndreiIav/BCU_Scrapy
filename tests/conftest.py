@@ -222,7 +222,7 @@ def add_data_to_magazines_table(create_db_tables):
 
 
 @pytest.fixture
-def create_not_wanted_magazines_test_file(tmp_path):
+def create_empty_test_file(tmp_path):
 
     target_file = tmp_path / "test_file.txt"
 
@@ -233,9 +233,9 @@ def create_not_wanted_magazines_test_file(tmp_path):
 
 
 @pytest.fixture
-def add_data_to_not_wanted_magazines_test_file(create_not_wanted_magazines_test_file):
+def add_data_to_not_wanted_magazines_test_file(create_empty_test_file):
 
-    target_file = create_not_wanted_magazines_test_file
+    target_file = create_empty_test_file
 
     data_to_be_written_in_file = ["Magazine_4", "Magazine_5"]
 
