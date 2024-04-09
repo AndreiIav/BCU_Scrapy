@@ -134,7 +134,7 @@ def write_wanted_magazines_file(
         # check if wanted_magazines.txt file was created
         # and print a confirmation message
         if path_wanted_magazines.is_file():
-            print("wanted_magazines.txt file was created.")
+            print(f"wanted_magazines.txt file was created at {path_wanted_magazines}.")
         # if the file doesn't exists there was no magazine name
         # to write in the file
         else:

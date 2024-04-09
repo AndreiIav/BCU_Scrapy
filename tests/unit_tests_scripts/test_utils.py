@@ -254,7 +254,9 @@ class TestWriteWantedMagazinesFile:
         )
         out, _ = capsys.readouterr()
 
-        assert "wanted_magazines.txt file was created." in out
+        assert (
+            f"wanted_magazines.txt file was created at {path_wanted_magazines}" in out
+        )
 
     test_values = [
         (["a", "b", "c"], [], [], ["a", "b", "c"]),
