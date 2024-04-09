@@ -3,10 +3,10 @@ from pathlib import Path
 
 from scripts_config import BASE_PATH, DATABASE_NAME
 
+path_database = Path(BASE_PATH) / DATABASE_NAME
 
-def create_database():
 
-    path_database = Path(BASE_PATH) / DATABASE_NAME
+def create_database(path_database):
 
     conn = sqlite3.connect(path_database)
     conn.execute("PRAGMA foreign_keys = 1")  # to enable foreign keys
@@ -44,8 +44,8 @@ def create_database():
             """
         )
 
-    conn.close()
+    print(f"sqlite database created at {path_database}")
 
 
 if __name__ == "__main__":
-    create_database()
+    create_database(path_database)
