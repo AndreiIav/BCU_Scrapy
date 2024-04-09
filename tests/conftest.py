@@ -1,25 +1,21 @@
-import pytest
 import sqlite3
 import requests
+from unittest.mock import Mock
 
+import pytest
+
+# --------------
 # Helper Classes
+# ---------------
 
 
 class MockSuccessResponseFromStartPage(object):
-    def __init__(self, url):
-        self.status_code = 200
-        self.url = url
+    def __init__(self):
         self.text = self.html_response()
+        self.raise_for_status = Mock()
 
     def html_response(self):
         return """
-        <!DOCTYPE html>
-        <html>
-        <head>
-        <title>Page Title</title>
-        </head>
-        <body>
-
         <table>
           <tr>
            <td>
@@ -32,23 +28,125 @@ class MockSuccessResponseFromStartPage(object):
            </td>
           </tr>
         </table>
-        
-        </body>
-        </html> 
         """
 
 
+class MockUnpearsableResponseFromStartPage(object):
+    def __init__(self):
+        self.text = self.html_response()
+        self.raise_for_status = Mock()
+
+    def html_response(self):
+        return """
+        <table>
+          <tr>
+           <td>
+             <a href="web/bibdigit/test_periodice/Magazine_1/">Magazine_1</a>
+           </td>
+          </tr>
+          <tr>
+           <td>
+             <a href="web/bibdigit/test_periodice/Magazine_2/">Magazine_2</a>
+           </td>
+          </tr>
+        </table>
+        """
+
+
+class MockHTTPError(object):
+    def __init__(self):
+        self.exception = self.raise_exception()
+
+    def raise_exception(self):
+        raise requests.exceptions.HTTPError()
+
+
+class MockConnectionError(object):
+    def __init__(self):
+        self.exception = self.raise_exception()
+
+    def raise_exception(self):
+        raise requests.exceptions.ConnectionError()
+
+
+class MockTimeoutError(object):
+    def __init__(self):
+        self.exception = self.raise_exception()
+
+    def raise_exception(self):
+        raise requests.exceptions.Timeout()
+
+
+class MockRequestException(object):
+    def __init__(self):
+        self.exception = self.raise_exception()
+
+    def raise_exception(self):
+        raise requests.exceptions.RequestException()
+
+
+# --------
 # Fixtures
+# --------
 
 
 @pytest.fixture
 def mock_get_all_magazine_names_from_start_page_success_response(monkeypatch):
 
     def mock_get(url):
-        return MockSuccessResponseFromStartPage(url)
+        return MockSuccessResponseFromStartPage()
 
-    url = "start_url"
     monkeypatch.setattr(requests, "get", mock_get)
+
+
+@pytest.fixture
+def mock_get_all_magazine_names_from_start_page_unparseable_response(monkeypatch):
+
+    def mock_get(url):
+        return MockUnpearsableResponseFromStartPage()
+
+    monkeypatch.setattr(requests, "get", mock_get)
+
+
+@pytest.fixture
+def mock_HTTPError(monkeypatch):
+
+    def mock_get_exception(url):
+        return MockHTTPError()
+
+    monkeypatch.setattr(requests, "get", mock_get_exception)
+
+
+@pytest.fixture
+def mock_ConnectionError(monkeypatch):
+
+    def mock_get_exception(url):
+        return MockConnectionError()
+
+    monkeypatch.setattr(requests, "get", mock_get_exception)
+
+
+@pytest.fixture
+def mock_TimeoutError(monkeypatch):
+
+    def mock_get_exception(url):
+        return MockTimeoutError()
+
+    monkeypatch.setattr(requests, "get", mock_get_exception)
+
+
+@pytest.fixture
+def mock_RequestException(monkeypatch):
+
+    def mock_get_exception(url):
+        return MockRequestException()
+
+    monkeypatch.setattr(requests, "get", mock_get_exception)
+
+
+@pytest.fixture
+def get_all_magazine_names_from_start_page_warning_message():
+    return "get_all_magazine_names_from_start_page() returns an empty list."
 
 
 @pytest.fixture

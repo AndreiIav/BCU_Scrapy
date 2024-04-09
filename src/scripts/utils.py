@@ -1,7 +1,6 @@
 import requests
 import sqlite3
 import re
-import logging
 
 from bs4 import BeautifulSoup
 
@@ -75,11 +74,20 @@ def get_all_magazine_names_from_start_page(url, regular_expression):
 
     magazine_names_from_start_page = []
     start_page_links_re = re.compile(regular_expression)
+    warning_message = "get_all_magazine_names_from_start_page() returns an empty list."
 
     try:
         r = requests.get(url)
-    except requests.exceptions.RequestException as err:
-        e = err
+        r.raise_for_status()
+    except requests.exceptions.HTTPError:
+        print(f"{url} cannot be reached due to a HTTP Error. {warning_message}")
+    except requests.exceptions.ConnectionError:
+        print(f"{url} cannot be reached due to a Connection Error. {warning_message}")
+    except requests.exceptions.Timeout:
+        print(f"{url} cannot be reached due to a Timeout Error. {warning_message}")
+    except requests.exceptions.RequestException:
+        print(f"{url} cannot be reached due to a Request Exception. {warning_message}")
+
     else:
         soup = BeautifulSoup(r.text, "lxml")
         all_links = soup.find_all("a")
@@ -92,13 +100,10 @@ def get_all_magazine_names_from_start_page(url, regular_expression):
                     if link.string and not link.string.isspace():
                         magazine_names_from_start_page.append(link.string)
 
-    # If magazine_names_from_start_page is empty, there was a connection
-    # issue. Print a warning with the error
-    if len(magazine_names_from_start_page) == 0:
-        logging.warning(
-            f"get_all_magazine_names_from_start_page() returns an empty list"
-            f" because of the followng request excception: {e}"
-        )
+        # If magazine_names_from_start_page is empty, the html response could
+        # not be parsed so print a warning.
+        if len(magazine_names_from_start_page) == 0:
+            print(f"the response from {url} could not be parsed. {warning_message}")
 
     return magazine_names_from_start_page
 

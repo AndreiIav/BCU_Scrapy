@@ -3,7 +3,6 @@ from scripts.utils import (
     get_not_wanted_magazines,
     get_all_magazine_names_from_start_page,
 )
-
 from scripts.scripts_config import MAGAZINE_LINKS_REGEX
 
 
@@ -118,3 +117,84 @@ class TestGetAllMagazineNamesFromStartPage:
         res = get_all_magazine_names_from_start_page("url", regular_expression)
 
         assert res == ["Magazine_1", "Magazine_2"]
+
+    def test_get_all_magazine_names_from_start_page_unparseable_response(
+        self,
+        mock_get_all_magazine_names_from_start_page_unparseable_response,
+        get_all_magazine_names_from_start_page_warning_message,
+        capsys,
+    ):
+
+        warning_message = get_all_magazine_names_from_start_page_warning_message
+        regular_expression = MAGAZINE_LINKS_REGEX
+        url = "start_url"
+        get_all_magazine_names_from_start_page(url, regular_expression)
+
+        out, _ = capsys.readouterr()
+
+        assert f"the response from {url} could not be parsed." in out
+        assert warning_message in out
+
+    def test_get_all_magazine_names_from_start_page_HTTPError(
+        self,
+        mock_HTTPError,
+        get_all_magazine_names_from_start_page_warning_message,
+        capsys,
+    ):
+
+        warning_message = get_all_magazine_names_from_start_page_warning_message
+        url = "start_url"
+        get_all_magazine_names_from_start_page(url, "regular_expression")
+
+        out, _ = capsys.readouterr()
+
+        assert f"{url} cannot be reached due to a HTTP Error." in out
+        assert warning_message in out
+
+    def test_get_all_magazine_names_from_start_page_ConnectionError(
+        self,
+        mock_ConnectionError,
+        get_all_magazine_names_from_start_page_warning_message,
+        capsys,
+    ):
+
+        warning_message = get_all_magazine_names_from_start_page_warning_message
+        url = "start_url"
+        get_all_magazine_names_from_start_page(url, "regular_expression")
+
+        out, _ = capsys.readouterr()
+
+        assert f"{url} cannot be reached due to a Connection Error." in out
+        assert warning_message in out
+
+    def test_get_all_magazine_names_from_start_page_TimeoutError(
+        self,
+        mock_TimeoutError,
+        get_all_magazine_names_from_start_page_warning_message,
+        capsys,
+    ):
+
+        warning_message = get_all_magazine_names_from_start_page_warning_message
+        url = "start_url"
+        get_all_magazine_names_from_start_page(url, "regular_expression")
+
+        out, _ = capsys.readouterr()
+
+        assert f"{url} cannot be reached due to a Timeout Error." in out
+        assert warning_message in out
+
+    def test_get_all_magazine_names_from_start_page_RequestException(
+        self,
+        mock_RequestException,
+        get_all_magazine_names_from_start_page_warning_message,
+        capsys,
+    ):
+
+        warning_message = get_all_magazine_names_from_start_page_warning_message
+        url = "start_url"
+        get_all_magazine_names_from_start_page(url, "regular_expression")
+
+        out, _ = capsys.readouterr()
+
+        assert f"{url} cannot be reached due to a Request Exception." in out
+        assert warning_message in out
