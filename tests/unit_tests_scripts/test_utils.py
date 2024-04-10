@@ -119,7 +119,7 @@ class TestGetAllMagazineNamesFromStartPage:
         regular_expression = MAGAZINE_LINKS_REGEX
         res = get_all_magazine_names_from_start_page("url", regular_expression)
 
-        assert res == ["Magazine_1", "Magazine_2"]
+        assert res == ["Magazine_1", "Magazine_2", "Magazine_3"]
 
     def test_get_all_magazine_names_from_start_page_unparseable_response(
         self,

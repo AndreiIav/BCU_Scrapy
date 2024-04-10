@@ -27,6 +27,11 @@ class MockSuccessResponseFromStartPage(object):
              <a href="web/bibdigit/periodice/Magazine_2/">Magazine_2</a>
            </td>
           </tr>
+          <tr>
+           <td>
+             <a href="web/bibdigit/periodice/Magazine_3/">Magazine_3</a>
+           </td>
+          </tr>
         </table>
         """
 
@@ -185,7 +190,7 @@ def add_data_to_magazines_table(create_db_tables):
     conn = sqlite3.connect(path_db)
     c = conn.cursor()
 
-    values_to_be_inserted = ["Magazine_1", "Magazine_2", "Magazine_3"]
+    values_to_be_inserted = ["Magazine_2", "Magazine_5", "Magazine_6"]
 
     with conn:
         for value in values_to_be_inserted:
@@ -215,7 +220,7 @@ def add_data_to_not_wanted_magazines_test_file(create_empty_test_file):
 
     target_file = create_empty_test_file
 
-    data_to_be_written_in_file = ["Magazine_4", "Magazine_5"]
+    data_to_be_written_in_file = ["Magazine_3", "Magazine_4"]
 
     with open(target_file, "a") as f:
         for data in data_to_be_written_in_file:
