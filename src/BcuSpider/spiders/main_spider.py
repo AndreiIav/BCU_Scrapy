@@ -31,10 +31,12 @@ from scripts.scripts_config import (
 class BCUSpider(scrapy.Spider):
     name = "bcu"
     start_urls = [START_URL_BCU]
+    path_database = Path(BASE_PATH) / DATABASE_NAME
+    path_wanted_magazines_file = Path(BASE_PATH) / "wanted_magazines.txt"
 
-    def get_wanted_magazines_from_file():
+    def get_wanted_magazines_from_file(file_path):
 
-        path_wanted_magazines_file = Path(BASE_PATH) / "wanted_magazines.txt"
+        path_wanted_magazines_file = file_path
 
         try:
             with open(path_wanted_magazines_file, encoding="utf_8") as file:
@@ -44,13 +46,13 @@ class BCUSpider(scrapy.Spider):
         else:
             return magazines
 
-    wanted_magazines = get_wanted_magazines_from_file()
+    wanted_magazines = get_wanted_magazines_from_file(path_wanted_magazines_file)
 
     def parse(self, response):
 
         # check if database file exists
         # if not, close the spider
-        path_database = Path(BASE_PATH) / DATABASE_NAME
+        path_database = self.path_database
         try:
             # This will open an existing database, but will raise an
             # error in case that file can not be opened or does not exist
