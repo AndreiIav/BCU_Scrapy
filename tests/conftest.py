@@ -1,8 +1,12 @@
 import sqlite3
 import requests
 from unittest.mock import Mock
+from pathlib import Path
 
 import pytest
+from scrapy.http import TextResponse, Request
+
+from scripts.scripts_config import BASE_PATH
 
 # --------------
 # Helper Classes
@@ -90,9 +94,34 @@ class MockRequestException(object):
         raise requests.exceptions.RequestException()
 
 
-# --------
-# Fixtures
-# --------
+# ---------------
+# Fixtures spider
+# ---------------
+
+
+@pytest.fixture
+def get_html_response(file_name):
+
+    url = "https://test_url.ro"
+
+    request = Request(url=url)
+    file_path = (
+        Path(BASE_PATH) / "tests" / "test_spider" / "test_html_pages" / file_name
+    )
+
+    with open(file_path, "r") as f:
+        file_content = f.read()
+
+    response = TextResponse(
+        url=url, request=request, body=file_content, encoding="utf-8"
+    )
+
+    return response
+
+
+# ----------------
+# Fixtures scripts
+# ----------------
 
 
 @pytest.fixture
