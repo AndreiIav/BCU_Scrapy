@@ -26,33 +26,37 @@ path_database = Path(BASE_PATH) / DATABASE_NAME
 
 
 class BcuMagazinesPipeline:
+    path_database = path_database
+
     def process_item(self, item, spider):
         adapter = ItemAdapter(item)
         if not isinstance(item, BcuSpiderMagazineItem):
             return item
 
         write_to_database(
-            path_database,
+            self.path_database,
             "magazines",
             adapter.get("name"),
             adapter.get("magazine_link"),
         )
 
         item["id"] = get_id_from_database(
-            path_database, "magazines", adapter.get("name")
+            self.path_database, "magazines", adapter.get("name")
         )
 
         return item
 
 
 class BcuMagazineYearsPipeline:
+    path_database = path_database
+
     def process_item(self, item, spider):
         adapter = ItemAdapter(item)
         if not isinstance(item, BcuSpiderMagazineYearItem):
             return item
 
         write_to_database(
-            path_database,
+            self.path_database,
             "magazine_year",
             adapter.get("magazine_id"),
             adapter.get("year"),
@@ -60,7 +64,7 @@ class BcuMagazineYearsPipeline:
         )
 
         item["id"] = get_id_from_database(
-            path_database,
+            self.path_database,
             "magazine_year",
             adapter.get("magazine_id"),
             adapter.get("year"),
@@ -70,6 +74,8 @@ class BcuMagazineYearsPipeline:
 
 
 class BcuMagazineYearsWithoutNumbersPipeline:
+    path_database = path_database
+
     def process_item(self, item, spider):
         adapter = ItemAdapter(item)
         if not isinstance(item, BcuSpiderMagazineYearWithoutNumbersItem):
@@ -78,7 +84,7 @@ class BcuMagazineYearsWithoutNumbersPipeline:
         # magazine years without numbers that have multiple magazine links
         if adapter.get("magazine_year_number"):
             write_to_database(
-                path_database,
+                self.path_database,
                 "magazine_year",
                 adapter.get("magazine_id"),
                 adapter.get("magazine_year_name_without_numbers"),
@@ -86,7 +92,7 @@ class BcuMagazineYearsWithoutNumbersPipeline:
             )
 
             item["id"] = get_id_from_database(
-                path_database,
+                self.path_database,
                 "magazine_year",
                 adapter.get("magazine_id"),
                 adapter.get("magazine_year_name_without_numbers"),
@@ -95,7 +101,7 @@ class BcuMagazineYearsWithoutNumbersPipeline:
         # magazine years without numbers that have a single magazine link
         else:
             write_to_database(
-                path_database,
+                self.path_database,
                 "magazine_year",
                 adapter.get("magazine_id"),
                 adapter.get("magazine_year_name_without_numbers"),
@@ -103,7 +109,7 @@ class BcuMagazineYearsWithoutNumbersPipeline:
             )
 
             item["id"] = get_id_from_database(
-                path_database,
+                self.path_database,
                 "magazine_year",
                 adapter.get("magazine_id"),
                 adapter.get("magazine_year_name_without_numbers"),
@@ -113,6 +119,8 @@ class BcuMagazineYearsWithoutNumbersPipeline:
 
 
 class BcuMagazineNumbersPipeline:
+    path_database = path_database
+
     def process_item(self, item, spider):
         adapter = ItemAdapter(item)
 
@@ -120,15 +128,17 @@ class BcuMagazineNumbersPipeline:
             return item
         if "public-view" in str(adapter.get("magazine_number_link")):
             raise DropItem(
-                f"MagazineNumberItem {item} dropped due to incorrect magazine_number_link"
+                f"MagazineNumberItem {item} dropped due to incorrect"
+                " magazine_number_link"
             )
         if not adapter.get("magazine_number_text"):
             raise DropItem(
-                f"MagazineNumberItem {item} dropped because magazine_number is missing"
+                f"MagazineNumberItem {item} dropped because magazine_number"
+                " is missing"
             )
         else:
             write_to_database(
-                path_database,
+                self.path_database,
                 "magazine_number",
                 adapter.get("magazine_year_id"),
                 adapter.get("magazine_number_text"),
@@ -136,7 +146,7 @@ class BcuMagazineNumbersPipeline:
             )
 
         item["id"] = get_id_from_database(
-            path_database,
+            self.path_database,
             "magazine_number",
             adapter.get("magazine_year_id"),
             adapter.get("magazine_number_text"),
@@ -146,6 +156,8 @@ class BcuMagazineNumbersPipeline:
 
 
 class BcuNumberPageContentPipeline:
+    path_database = path_database
+
     def process_item(self, item, spider):
         adapter = ItemAdapter(item)
         if not isinstance(item, BcuSpiderMagazineContentPageItem):
@@ -156,15 +168,17 @@ class BcuNumberPageContentPipeline:
 
         if not magazine_content_text:
             raise DropItem(
-                f"ContentPageItem {item} dropped becuase magazine_number_text is empty."
+                f"ContentPageItem {item} dropped becuase magazine_number_text"
+                " is empty."
             )
         if not magazine_content_page:
             raise DropItem(
-                f"ContentPageItem {item} dropped becuase magazine_number_page is missing."
+                f"ContentPageItem {item} dropped becuase magazine_number_page"
+                " is missing."
             )
 
         write_to_database(
-            path_database,
+            self.path_database,
             "magazine_number_content",
             adapter.get("magazine_number_id"),
             adapter.get("magazine_content_text"),
