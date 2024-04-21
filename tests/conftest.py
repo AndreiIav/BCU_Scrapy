@@ -106,11 +106,15 @@ def get_html_response(file_name):
 
     request = Request(url=url)
     file_path = (
-        Path(BASE_PATH) / "tests" / "test_spider" / "test_html_pages" / file_name
+        Path(BASE_PATH) / "tests" / "test_spider" / "dummy_data_for_tests" / file_name
     )
 
-    with open(file_path, "r") as f:
-        file_content = f.read()
+    if ".html" in file_name:
+        with open(file_path, "r") as f:
+            file_content = f.read()
+    elif ".pdf" in file_name:
+        with open(file_path, "rb") as f:
+            file_content = f.read()
 
     response = TextResponse(
         url=url, request=request, body=file_content, encoding="utf-8"
