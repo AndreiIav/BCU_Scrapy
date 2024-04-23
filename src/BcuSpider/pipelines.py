@@ -168,7 +168,7 @@ class BcuNumberPageContentPipeline:
 
         if not magazine_content_text:
             raise DropItem(
-                f"ContentPageItem {item} dropped becuase magazine_number_text"
+                f"ContentPageItem {item} dropped becuase magazine_content_text"
                 " is empty."
             )
         elif not magazine_content_page:
