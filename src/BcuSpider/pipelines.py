@@ -131,7 +131,7 @@ class BcuMagazineNumbersPipeline:
                 f"MagazineNumberItem {item} dropped due to incorrect"
                 " magazine_number_link"
             )
-        if not adapter.get("magazine_number_text"):
+        elif not adapter.get("magazine_number_text"):
             raise DropItem(
                 f"MagazineNumberItem {item} dropped because magazine_number"
                 " is missing"
@@ -145,14 +145,14 @@ class BcuMagazineNumbersPipeline:
                 adapter.get("magazine_number_link"),
             )
 
-        item["id"] = get_id_from_database(
-            self.path_database,
-            "magazine_number",
-            adapter.get("magazine_year_id"),
-            adapter.get("magazine_number_text"),
-        )
+            item["id"] = get_id_from_database(
+                self.path_database,
+                "magazine_number",
+                adapter.get("magazine_year_id"),
+                adapter.get("magazine_number_text"),
+            )
 
-        return item
+            return item
 
 
 class BcuNumberPageContentPipeline:
@@ -171,18 +171,19 @@ class BcuNumberPageContentPipeline:
                 f"ContentPageItem {item} dropped becuase magazine_number_text"
                 " is empty."
             )
-        if not magazine_content_page:
+        elif not magazine_content_page:
             raise DropItem(
                 f"ContentPageItem {item} dropped becuase magazine_number_page"
                 " is missing."
             )
 
-        write_to_database(
-            self.path_database,
-            "magazine_number_content",
-            adapter.get("magazine_number_id"),
-            adapter.get("magazine_content_text"),
-            adapter.get("magazine_content_page"),
-        )
+        else:
+            write_to_database(
+                self.path_database,
+                "magazine_number_content",
+                adapter.get("magazine_number_id"),
+                adapter.get("magazine_content_text"),
+                adapter.get("magazine_content_page"),
+            )
 
-        return item
+            return item
