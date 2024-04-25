@@ -94,9 +94,9 @@ class MockRequestException(object):
         raise requests.exceptions.RequestException()
 
 
-# ---------------
-# Fixtures spider
-# ---------------
+# --------
+# Fixtures
+# --------
 
 
 @pytest.fixture
@@ -121,11 +121,6 @@ def get_html_response(file_name):
     )
 
     return response
-
-
-# ----------------
-# Fixtures scripts
-# ----------------
 
 
 @pytest.fixture
