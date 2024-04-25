@@ -265,7 +265,7 @@ def create_empty_test_file(tmp_path):
 
 
 @pytest.fixture
-def add_data_to_not_wanted_magazines_test_file(create_empty_test_file):
+def add_data_to_empty_test_file(create_empty_test_file):
 
     target_file = create_empty_test_file
 

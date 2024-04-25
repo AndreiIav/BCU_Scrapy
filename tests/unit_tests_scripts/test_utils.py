@@ -101,10 +101,10 @@ class TestGetNotWantedMagazines:
         assert res == []
 
     def test_get_not_wanted_magazines_with_data_in_file(
-        self, add_data_to_not_wanted_magazines_test_file
+        self, add_data_to_empty_test_file
     ):
 
-        file_path, file_values = add_data_to_not_wanted_magazines_test_file
+        file_path, file_values = add_data_to_empty_test_file
 
         res = get_not_wanted_magazines(file_path)
 
