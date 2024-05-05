@@ -15,19 +15,29 @@ path_list_of_magazines_not_to_be_scrapped = (
 path_wanted_magazines = Path(BASE_PATH) / "wanted_magazines.txt"
 
 
-already_inserted_magazine_name = get_already_inserted_magazine_name(path_database)
+def main(
+    path_database, path_list_of_magazines_not_to_be_scrapped, path_wanted_magazines
+):
 
-not_wanted_magazines = get_not_wanted_magazines(
-    path_list_of_magazines_not_to_be_scrapped
-)
+    already_inserted_magazine_name = get_already_inserted_magazine_name(path_database)
 
-all_magazine_names_from_start_page = get_all_magazine_names_from_start_page(
-    START_URL_BCU, MAGAZINE_LINKS_REGEX
-)
+    not_wanted_magazines = get_not_wanted_magazines(
+        path_list_of_magazines_not_to_be_scrapped
+    )
 
-write_wanted_magazines_file(
-    all_magazine_names_from_start_page,
-    already_inserted_magazine_name,
-    not_wanted_magazines,
-    path_wanted_magazines,
-)
+    all_magazine_names_from_start_page = get_all_magazine_names_from_start_page(
+        START_URL_BCU, MAGAZINE_LINKS_REGEX
+    )
+
+    write_wanted_magazines_file(
+        all_magazine_names_from_start_page,
+        already_inserted_magazine_name,
+        not_wanted_magazines,
+        path_wanted_magazines,
+    )
+
+
+if __name__ == "__main__":  # pragma: no cover
+    main(
+        path_database, path_list_of_magazines_not_to_be_scrapped, path_wanted_magazines
+    )

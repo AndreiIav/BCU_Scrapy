@@ -47,5 +47,5 @@ def create_database(path_database):
     print(f"sqlite database created at {path_database}")
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     create_database(path_database)

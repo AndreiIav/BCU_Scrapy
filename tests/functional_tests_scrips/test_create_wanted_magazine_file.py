@@ -1,10 +1,4 @@
-from scripts.utils import (
-    get_already_inserted_magazine_name,
-    get_not_wanted_magazines,
-    get_all_magazine_names_from_start_page,
-    write_wanted_magazines_file,
-)
-from scripts.scripts_config import MAGAZINE_LINKS_REGEX
+from scripts.create_wanted_magazines_file import main
 
 
 def test_create_wanted_magazine_file_script(
@@ -18,18 +12,8 @@ def test_create_wanted_magazine_file_script(
     path_list_of_magazines_not_to_be_scrapped, _ = add_data_to_empty_test_file
     path_wanted_magazines = tmp_path / "wanted_magazines.txt"
 
-    already_inserted_magazine_name = get_already_inserted_magazine_name(path_database)
-    not_wanted_magazines = get_not_wanted_magazines(
-        path_list_of_magazines_not_to_be_scrapped
-    )
-    all_magazine_names_from_start_page = get_all_magazine_names_from_start_page(
-        "url", MAGAZINE_LINKS_REGEX
-    )
-    write_wanted_magazines_file(
-        all_magazine_names_from_start_page,
-        already_inserted_magazine_name,
-        not_wanted_magazines,
-        path_wanted_magazines,
+    main(
+        path_database, path_list_of_magazines_not_to_be_scrapped, path_wanted_magazines
     )
 
     assert path_wanted_magazines.is_file()
