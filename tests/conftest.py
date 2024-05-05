@@ -243,12 +243,7 @@ def add_data_to_magazines_table(create_db_tables):
 
     with conn:
         for value in values_to_be_inserted:
-            c.execute(
-                f"""
-                INSERT INTO magazines(name)
-                Values ('{value}')
-                """
-            )
+            c.execute("INSERT INTO magazines(name) VALUES (?)", (value,))
 
     yield path_db, values_to_be_inserted
 
