@@ -183,7 +183,7 @@ def get_all_magazine_names_from_start_page_warning_message():
 
 
 @pytest.fixture
-def create_test_tb(tmp_path):
+def create_test_db(tmp_path):
     path_db = tmp_path / "test.db"
     conn = sqlite3.connect(path_db)
 
@@ -191,9 +191,9 @@ def create_test_tb(tmp_path):
 
 
 @pytest.fixture
-def create_db_tables(create_test_tb):
+def create_db_tables(create_test_db):
 
-    path_db = create_test_tb
+    path_db = create_test_db
     conn = sqlite3.connect(path_db)
     c = conn.cursor()
 

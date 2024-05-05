@@ -23,10 +23,10 @@ class TestGetAlreadyInsertedMagazineName:
         )
 
     def test_get_already_inserted_magazine_name_with_no_existing_magazines_table(
-        self, capsys, create_test_tb
+        self, capsys, create_test_db
     ):
 
-        path_db = create_test_tb
+        path_db = create_test_db
 
         get_already_inserted_magazine_name(path_db)
         out, _ = capsys.readouterr()

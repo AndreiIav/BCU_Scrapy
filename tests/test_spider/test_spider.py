@@ -11,13 +11,13 @@ class TestSpiderParseStartPage:
 
     @pytest.mark.parametrize("file_name", ["dummy_start_page.html"])
     def test_spider_parse_content_parsed_correctly(
-        self, get_html_response, create_test_tb
+        self, get_html_response, create_test_db
     ):
 
         test_spider = BCUSpider()
         test_response = get_html_response
         test_spider.wanted_magazines = ["Magazine_1", "Magazine_2"]
-        test_spider.path_database = create_test_tb
+        test_spider.path_database = create_test_db
 
         expected_dict_magazine_1 = dict(
             magazine_link="https://documente.bcucluj.ro/web/bibdigit/periodice/Magazine_1/",
@@ -47,13 +47,13 @@ class TestSpiderParseStartPage:
 
     @pytest.mark.parametrize("file_name", ["dummy_start_page.html"])
     def test_spider_parse_not_wanted_magazine_not_scrapped(
-        self, get_html_response, create_test_tb
+        self, get_html_response, create_test_db
     ):
 
         test_spider = BCUSpider()
         test_response = get_html_response
         test_spider.wanted_magazines = ["Magazine_1"]
-        test_spider.path_database = create_test_tb
+        test_spider.path_database = create_test_db
 
         expected_dict_magazine_2 = dict(
             magazine_link="https://documente.bcucluj.ro/web/bibdigit/periodice/Magazine_2/",
