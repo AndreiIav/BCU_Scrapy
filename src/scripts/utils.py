@@ -52,19 +52,20 @@ def get_not_wanted_magazines(path_list_of_magazines_not_to_be_scrapped):
         with open(path_list_of_magazines_not_to_be_scrapped, encoding="utf_8") as f:
             for line in f:
                 not_wanted_magazines.append(line.strip())
+
+            # if not_wanted_magazines is empty, the file is empty
+            # so print a warning
+            if len(not_wanted_magazines) == 0:
+                print(
+                    "get_not_wanted_magazines() returns an empty list."
+                    f" Check {path_list_of_magazines_not_to_be_scrapped}"
+                    " file if it is empty."
+                )
+
     except FileNotFoundError:
         print(
             f"The 'list_of_magazines_not_to_be_scrapped.txt' does not exists at"
             f" {path_list_of_magazines_not_to_be_scrapped}"
-        )
-
-    # if not_wanted_magazines is empty, the file is empty
-    # so print a warning
-    if len(not_wanted_magazines) == 0:
-        print(
-            "get_not_wanted_magazines() returns an empty list."
-            f" Check {path_list_of_magazines_not_to_be_scrapped}"
-            " file if it is empty."
         )
 
     return not_wanted_magazines

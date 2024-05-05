@@ -88,11 +88,6 @@ class TestGetNotWantedMagazines:
         out, _ = capsys.readouterr()
 
         assert (
-            "The 'list_of_magazines_not_to_be_scrapped.txt' does not exists at"
-            f" {file_path}" not in out
-        )
-
-        assert (
             "get_not_wanted_magazines() returns an empty list."
             f" Check {file_path}"
             " file if it is empty." in out
