@@ -64,3 +64,14 @@ def get_id_from_database(database_path, table, *values):
     conn.close()
 
     return id
+
+
+def get_wanted_magazines_from_file(file_path):
+
+    try:
+        with open(file_path, encoding="utf_8") as file:
+            magazines = [magazine.strip() for magazine in file]
+    except FileNotFoundError:
+        print(f"File not found at {file_path}")
+    else:
+        return magazines

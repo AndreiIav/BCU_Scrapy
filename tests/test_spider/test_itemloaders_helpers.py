@@ -1,9 +1,12 @@
 import sqlite3
 
+import pytest
+
 from BcuSpider.itemsloaders_helpers import (
     remove_last_element_from_url,
     write_to_database,
     get_id_from_database,
+    get_wanted_magazines_from_file,
 )
 
 
@@ -132,60 +135,80 @@ class TestWriteToDatabase:
 
         assert data_from_db == values
 
-    class TestGetIdFromDatabase:
 
-        def test_get_id_from_database_from_magazines_table(self, create_db_tables):
+class TestGetIdFromDatabase:
 
-            database_path = create_db_tables
-            values = ["Magazine_name", "Magazine_link"]
+    def test_get_id_from_database_from_magazines_table(self, create_db_tables):
 
-            conn = sqlite3.connect(database_path)
-            c = conn.cursor()
+        database_path = create_db_tables
+        values = ["Magazine_name", "Magazine_link"]
 
-            with conn:
-                c.execute(
-                    "INSERT INTO magazines(name, magazine_link) VALUES(?,?)",
-                    (values[0], values[1]),
-                )
+        conn = sqlite3.connect(database_path)
+        c = conn.cursor()
 
-            res = get_id_from_database(database_path, "magazines", values[0])
+        with conn:
+            c.execute(
+                "INSERT INTO magazines(name, magazine_link) VALUES(?,?)",
+                (values[0], values[1]),
+            )
 
-            assert res == 1
+        res = get_id_from_database(database_path, "magazines", values[0])
 
-        def test_get_id_from_database_from_magazine_year_table(self, create_db_tables):
+        assert res == 1
 
-            database_path = create_db_tables
-            values = [1, "Year", "Year_link"]
+    def test_get_id_from_database_from_magazine_year_table(self, create_db_tables):
 
-            conn = sqlite3.connect(database_path)
-            c = conn.cursor()
+        database_path = create_db_tables
+        values = [1, "Year", "Year_link"]
 
-            with conn:
-                c.execute(
-                    "INSERT INTO magazine_year(magazine_id, year, magazine_year_link) VALUES (?, ?, ?)",
-                    (values[0], values[1], values[2]),
-                )
+        conn = sqlite3.connect(database_path)
+        c = conn.cursor()
 
-            res = get_id_from_database(database_path, "magazine_year", *values[:2])
+        with conn:
+            c.execute(
+                "INSERT INTO magazine_year(magazine_id, year, magazine_year_link) VALUES (?, ?, ?)",
+                (values[0], values[1], values[2]),
+            )
 
-            assert res == 1
+        res = get_id_from_database(database_path, "magazine_year", *values[:2])
 
-        def test_get_id_from_database_from_magazine_number_table(
-            self, create_db_tables
-        ):
+        assert res == 1
 
-            database_path = create_db_tables
-            values = [1, "Magazine_number", "Magazine_number_link"]
+    def test_get_id_from_database_from_magazine_number_table(self, create_db_tables):
 
-            conn = sqlite3.connect(database_path)
-            c = conn.cursor()
+        database_path = create_db_tables
+        values = [1, "Magazine_number", "Magazine_number_link"]
 
-            with conn:
-                c.execute(
-                    "INSERT INTO magazine_number(magazine_year_id, magazine_number, magazine_number_link) VALUES (?, ?, ?)",
-                    (values[0], values[1], values[2]),
-                )
+        conn = sqlite3.connect(database_path)
+        c = conn.cursor()
 
-            res = get_id_from_database(database_path, "magazine_number", *values[:2])
+        with conn:
+            c.execute(
+                "INSERT INTO magazine_number(magazine_year_id, magazine_number, magazine_number_link) VALUES (?, ?, ?)",
+                (values[0], values[1], values[2]),
+            )
 
-            assert res == 1
+        res = get_id_from_database(database_path, "magazine_number", *values[:2])
+
+        assert res == 1
+
+
+class TestGetWantedMagazinesFromFile:
+
+    def test_get_wanted_magazines_from_file_gets_data(
+        self, add_data_to_empty_test_file
+    ):
+
+        file_path, file_data = add_data_to_empty_test_file
+        res = get_wanted_magazines_from_file(file_path)
+
+        assert res == file_data
+
+    def test_get_wanted_magazines_from_file_missing_file(self, tmp_path, capsys):
+
+        file_path = tmp_path / "file.txt"
+
+        get_wanted_magazines_from_file(file_path)
+        out, _ = capsys.readouterr()
+
+        assert out.strip() == f"File not found at {file_path}"

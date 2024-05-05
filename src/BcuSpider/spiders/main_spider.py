@@ -20,7 +20,11 @@ from BcuSpider.itemsloaders import (
     BcuMagazineYearWithoutNumbersLoader,
     BcuMagazineContentPageLoader,
 )
-from BcuSpider.itemsloaders_helpers import remove_last_element_from_url
+from BcuSpider.itemsloaders_helpers import (
+    remove_last_element_from_url,
+    get_wanted_magazines_from_file,
+)
+
 from scripts.scripts_config import (
     BASE_PATH,
     START_URL_BCU,
@@ -33,19 +37,6 @@ class BCUSpider(scrapy.Spider):
     start_urls = [START_URL_BCU]
     path_database = Path(BASE_PATH) / DATABASE_NAME
     path_wanted_magazines_file = Path(BASE_PATH) / "wanted_magazines.txt"
-
-    def get_wanted_magazines_from_file(file_path):
-
-        path_wanted_magazines_file = file_path
-
-        try:
-            with open(path_wanted_magazines_file, encoding="utf_8") as file:
-                magazines = [magazine.strip() for magazine in file]
-        except FileNotFoundError:
-            print(f"File not found at {path_wanted_magazines_file}")
-        else:
-            return magazines
-
     wanted_magazines = get_wanted_magazines_from_file(path_wanted_magazines_file)
 
     def parse(self, response):
