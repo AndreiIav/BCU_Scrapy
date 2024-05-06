@@ -4,7 +4,7 @@ import logging
 from pathlib import Path
 
 import scrapy
-from PyPDF2 import PdfReader
+from pypdf import PdfReader
 
 from BcuSpider.items import (
     BcuSpiderMagazineItem,
