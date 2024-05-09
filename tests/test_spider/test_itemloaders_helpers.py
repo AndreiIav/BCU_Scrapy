@@ -211,4 +211,7 @@ class TestGetWantedMagazinesFromFile:
         get_wanted_magazines_from_file(file_path)
         out, _ = capsys.readouterr()
 
-        assert out.strip() == f"File not found at {file_path}"
+        assert out.strip() == (
+            "wanted_magazines.txt file was not found"
+            f" at {file_path}. The spider has no magazine to scrape."
+        )

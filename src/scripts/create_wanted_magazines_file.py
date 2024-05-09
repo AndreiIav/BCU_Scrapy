@@ -12,7 +12,7 @@ path_database = Path(BASE_PATH) / DATABASE_NAME
 path_list_of_magazines_not_to_be_scrapped = (
     Path(BASE_PATH) / "extra" / "list_of_magazines_not_to_be_scrapped.txt"
 )
-path_wanted_magazines = Path(BASE_PATH) / "wanted_magazines.txt"
+path_wanted_magazines = Path(BASE_PATH) / "extra" / "wanted_magazines.txt"
 
 
 def main(

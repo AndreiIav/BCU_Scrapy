@@ -72,6 +72,9 @@ def get_wanted_magazines_from_file(file_path):
         with open(file_path, encoding="utf_8") as file:
             magazines = [magazine.strip() for magazine in file]
     except FileNotFoundError:
-        print(f"File not found at {file_path}")
+        print(
+            "wanted_magazines.txt file was not found"
+            f" at {file_path}. The spider has no magazine to scrape."
+        )
     else:
         return magazines

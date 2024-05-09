@@ -36,7 +36,7 @@ class BCUSpider(scrapy.Spider):
     name = "bcu"
     start_urls = [START_URL_BCU]
     path_database = Path(BASE_PATH) / DATABASE_NAME
-    path_wanted_magazines_file = Path(BASE_PATH) / "wanted_magazines.txt"
+    path_wanted_magazines_file = Path(BASE_PATH) / "extra" / "wanted_magazines.txt"
     wanted_magazines = get_wanted_magazines_from_file(path_wanted_magazines_file)
 
     def parse(self, response):
