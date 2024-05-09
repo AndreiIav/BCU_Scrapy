@@ -200,9 +200,7 @@ $RECYCLE.BIN/
 *.lnk
 
 # Project Specific stuff
-downloads/
 log.txt
-extra/
 *db
 wanted_magazines.txt
 
