@@ -10,14 +10,14 @@ All the magazines names, years, numbers and the pdf content are saved in a sqlit
 
 
 # Installation
-Pull down the source code from GitHub:
+Pull down the source code from GitHub:\
 `git clone https://github.com/AndreiIav/BCU_Scrapy_Scrapper.git`
 
 Create a new virtual environment
 
 Activate the virtual environment
 
-Install the python packages specified in requirements.txt:
+Install the python packages specified in requirements.txt:\
 `(venv) $ pip install -r requirements.txt`
 
 
@@ -43,10 +43,10 @@ Or, by running the **create_wanted_magazines_file.py** script a new *wanted_maga
 created in the correct location. The file is created by checking what magazine names exists at [https://documente.bcucluj.ro/periodice.html](https://documente.bcucluj.ro/periodice.html)
 but not in the database in magazines table (the script is located in root_folder\src\scripts).\
 Also, the **create_wanted_magazines_file.py** script checks if a *list_of_magazines_not_to_be_scrapped.txt*
-exists in root_folder\extra. This file is optional and can be removed if desired, or other magazine names can be added to it(every magazine name on a new line).
+exists in root_folder\extra. This file is optional and can be removed if desired, or other magazine names can be added to it (every magazine name on a new line).
 
 # Running the Spider
-Go to root_folder\src\BcuSpider and run:
+Go to root_folder\src\BcuSpider and run:\
 `(venv) $ scrapy crawl bcu`
 
 
@@ -64,5 +64,5 @@ Go to root_folder\src\BcuSpider and run:
 To run all the tests:\
 `(venv) $ pytest`
 
-To check the code coverage of the tests:
+To check the code coverage of the tests:\
 `(venv) $ pytest --cov-report term-missing --cov=src`
