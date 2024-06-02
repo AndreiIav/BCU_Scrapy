@@ -205,6 +205,37 @@ class TestSpiderParseMagazineYears:
             assert expected_next_request.url == res[1].url
             assert expected_next_request.method == res[1].method
 
+        # regression test
+        @pytest.mark.parametrize(
+            "file_name", ["dummy_magazine_numbers_page_without_div_bug.html"]
+        )
+        def test_parse_magazine_numbers_without_div_content_parsed_correctly(
+            self, get_html_response
+        ):
+
+            test_spider = BCUSpider()
+            test_response = get_html_response
+            magazine_year_id = 1
+            magazine_year_link = "https://www.mag_link/1900.html"
+
+            expected_dict_magazine = dict(
+                magazine_number_text="Nr.1",
+                magazine_number_link="https://www.mag_link/01.pdf",
+                magazine_year_id=magazine_year_id,
+            )
+
+            res = list(
+                test_spider.parse_magazine_numbers(
+                    test_response, magazine_year_id, magazine_year_link
+                )
+            )
+            expected_next_request = Request(url="https://www.mag_link/01.pdf")
+
+            assert expected_dict_magazine in res
+
+            assert expected_next_request.url == res[1].url
+            assert expected_next_request.method == res[1].method
+
         @pytest.mark.parametrize("file_name", ["dummy_magazine_numbers_page.html"])
         def test_parse_magazine_numbers_for_magazines_without_numbers_success(
             self, get_html_response

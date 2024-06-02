@@ -187,7 +187,7 @@ class BCUSpider(scrapy.Spider):
     ):
         if not magazine_without_numbers:
             magazine_numbers = response.xpath(
-                "//div//a[contains(@href, '.pdf') and normalize-space(text())]"
+                "//a[contains(@href, '.pdf') and normalize-space(text())]"
             )
 
             for number in magazine_numbers:
