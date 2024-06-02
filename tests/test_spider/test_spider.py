@@ -45,6 +45,33 @@ class TestSpiderParseStartPage:
         assert expected_request_magazine_2.url == res[3].url
         assert expected_request_magazine_2.method == res[3].method
 
+    # regression test
+    @pytest.mark.parametrize(
+        "file_name", ["dummy_start_page_magazine_name_with_space_bug.html"]
+    )
+    def test_spider_parse_content_parsed_correctly_if_magazine_name_contains_space(
+        self, get_html_response, create_test_db
+    ):
+
+        test_spider = BCUSpider()
+        test_response = get_html_response
+        test_spider.wanted_magazines = ["Magazine_1"]
+        test_spider.path_database = create_test_db
+
+        expected_dict_magazine_1 = dict(
+            magazine_link="https://documente.bcucluj.ro/web/bibdigit/periodice/Magazine_1/",
+            name="Magazine_1",
+        )
+        expected_request_magazine_1 = Request(
+            url="https://documente.bcucluj.ro/web/bibdigit/periodice/Magazine_1/"
+        )
+
+        res = list(test_spider.parse(test_response))
+
+        assert expected_dict_magazine_1 in res
+        assert expected_request_magazine_1.url == res[1].url
+        assert expected_request_magazine_1.method == res[1].method
+
     @pytest.mark.parametrize("file_name", ["dummy_start_page.html"])
     def test_spider_parse_not_wanted_magazine_not_scrapped(
         self, get_html_response, create_test_db

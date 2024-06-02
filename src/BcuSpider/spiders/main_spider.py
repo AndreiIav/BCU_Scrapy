@@ -64,9 +64,9 @@ class BCUSpider(scrapy.Spider):
         )
 
         for mag in magazines:
-            if mag.xpath("text()").get() in self.wanted_magazines:
+            if mag.xpath("normalize-space(text())").get() in self.wanted_magazines:
                 magazine = BcuMagazineLoader(item=BcuSpiderMagazineItem(), selector=mag)
-                magazine.add_xpath("name", "text()")
+                magazine.add_xpath("name", "normalize-space(text())")
                 magazine.add_xpath("magazine_link", "@href")
                 yield magazine.load_item()
 
