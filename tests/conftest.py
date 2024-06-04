@@ -33,7 +33,7 @@ class MockSuccessResponseFromStartPage(object):
           </tr>
           <tr>
            <td>
-             <a href="web/bibdigit/periodice/Magazine_3/">Magazine_3</a>
+             <a href="web/bibdigit/periodice/Magazine_3/">Magazine_3 </a>
            </td>
           </tr>
         </table>

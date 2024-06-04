@@ -99,7 +99,7 @@ def get_all_magazine_names_from_start_page(url, regular_expression):
                 # get only the links that contain a magazine name
                 if start_page_links_re.search(str_to_search):
                     if link.string and not link.string.isspace():
-                        magazine_names_from_start_page.append(link.string)
+                        magazine_names_from_start_page.append(link.string.strip())
 
         # If magazine_names_from_start_page is empty, the html response could
         # not be parsed so print a warning.
