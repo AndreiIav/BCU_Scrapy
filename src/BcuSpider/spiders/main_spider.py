@@ -1,35 +1,30 @@
 import io
-import sqlite3
 import logging
+import sqlite3
 from pathlib import Path
 
 import scrapy
 from pypdf import PdfReader
 
 from BcuSpider.items import (
-    BcuSpiderMagazineItem,
-    BcuSpiderMagazineYearItem,
-    BcuSpiderMagazineNumberItem,
-    BcuSpiderMagazineYearWithoutNumbersItem,
     BcuSpiderMagazineContentPageItem,
+    BcuSpiderMagazineItem,
+    BcuSpiderMagazineNumberItem,
+    BcuSpiderMagazineYearItem,
+    BcuSpiderMagazineYearWithoutNumbersItem,
 )
 from BcuSpider.itemsloaders import (
-    BcuMagazineLoader,
-    BcuMagazineYearLoader,
-    BcuMagazineNumberLoader,
-    BcuMagazineYearWithoutNumbersLoader,
     BcuMagazineContentPageLoader,
+    BcuMagazineLoader,
+    BcuMagazineNumberLoader,
+    BcuMagazineYearLoader,
+    BcuMagazineYearWithoutNumbersLoader,
 )
 from BcuSpider.itemsloaders_helpers import (
-    remove_last_element_from_url,
     get_wanted_magazines_from_file,
+    remove_last_element_from_url,
 )
-
-from scripts.scripts_config import (
-    BASE_PATH,
-    START_URL_BCU,
-    DATABASE_NAME,
-)
+from scripts.scripts_config import BASE_PATH, DATABASE_NAME, START_URL_BCU
 
 
 class BCUSpider(scrapy.Spider):
@@ -39,8 +34,24 @@ class BCUSpider(scrapy.Spider):
     path_wanted_magazines_file = Path(BASE_PATH) / "extra" / "wanted_magazines.txt"
     wanted_magazines = get_wanted_magazines_from_file(path_wanted_magazines_file)
 
-    def parse(self, response):
+    @classmethod
+    def from_crawler(cls, crawler, *args, **kwargs):
+        spider = super(BCUSpider, cls).from_crawler(crawler, *args, **kwargs)
+        crawler.signals.connect(
+            spider.spider_opened, signal=scrapy.signals.spider_opened
+        )
+        crawler.signals.connect(
+            spider.spider_closed, signal=scrapy.signals.spider_closed
+        )
+        return spider
 
+    def spider_opened(self):
+        print("BCUSpider started and working...")
+
+    def spider_closed(self):
+        print("BCUSpider finished")
+
+    def parse(self, response):
         # check if database file exists
         # if not, close the spider
         path_database = self.path_database
