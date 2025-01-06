@@ -60,7 +60,7 @@ exists in 'BCU_Scrapy/extra' directory. This file exists by default but is optio
 In order to run the spider change the current working directory to BCU_Scrapy/src/BcuSpider and run the following command:\
 `(venv) $ scrapy crawl bcu`\
 **Note**: Running the spider on a fresh database might take a very long time (since there are no magazines already scraped). For testing purposes, the _wanted_magazines.txt_ file can be manually edited to contain only one magazine 
-that doesn't have to many numbers (e.g.: _Alge (1930-1931)_).
+that doesn't have to many numbers (e.g.: _Cultura, 1924_).
 
 # Check results
 After the spider finishes, the data from the _app.db_ can be checked using any database tool that supports SQLite (e.g.: _DBeaver_, _SQLiteStudio_) or the _sqlite3_ command line. 
